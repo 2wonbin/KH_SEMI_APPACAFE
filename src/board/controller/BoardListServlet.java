@@ -1,0 +1,58 @@
+package board.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import board.model.service.BoardService;
+import board.model.vo.BoardVo;
+import common.util.CommonUtil;
+
+@WebServlet("/board")
+public class BoardListServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+      
+	private BoardService boardService = new BoardService();
+
+    public BoardListServlet() {
+        super();
+    }
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		try {
+			final int numPerPage = 5;
+			int cpage = 1;
+			
+			try {
+				cpage = Integer.parseInt(request.getParameter("cpage"));			
+			}catch(NumberFormatException e) {
+				
+			}
+			
+			List<BoardVo> list = boardService.selectBoardList(cpage, numPerPage); 
+			System.out.println("list@servlet="+list);
+			
+			int totalContents = boardService.selectBoardCount();
+			
+			String url = request.getRequestURI();
+			String pageBar = CommonUtil.getPageBar(totalContents, cpage, numPerPage, url);
+			
+			request.setAttribute("list",list);
+			request.setAttribute("pageBar",pageBar);
+			request.getRequestDispatcher("/WEB-INF/views/board/board.jsp")
+			   .forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+
+	}
+
+}
