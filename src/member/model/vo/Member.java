@@ -1,10 +1,9 @@
 package member.model.vo;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-public class Member implements Serializable{
-
+public class Member {
+	
 	private int memberNo;
 	private String memberId;
 	private String password;
@@ -14,7 +13,7 @@ public class Member implements Serializable{
 	private String email;
 	private String phone;
 	private String address;
-	private int memberGrade;
+	private int grade;
 	private String memberRole;
 	private Date enrollDate;
 	private String delFlag;
@@ -22,24 +21,23 @@ public class Member implements Serializable{
 	
 	public Member() {
 		super();
-		
 	}
 
-	public Member(int memberNo, String memberId, String password, String memberName, int memberGrade, String memberRole,
-			String nickName, String ssn, String email, String phone, String address, Date enrollDate, String delFlag,
-			Date delDate) {
+	public Member(int memberNo, String memberId, String password, String memberName, String nickName, String ssn,
+			String email, String phone, String address, int grade, String memberRole, Date enrollDate,
+			String delFlag, Date delDate) {
 		super();
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.password = password;
 		this.memberName = memberName;
-		this.memberGrade = memberGrade;
-		this.memberRole = memberRole;
 		this.nickName = nickName;
 		this.ssn = ssn;
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
+		this.grade = grade;
+		this.memberRole = memberRole;
 		this.enrollDate = enrollDate;
 		this.delFlag = delFlag;
 		this.delDate = delDate;
@@ -75,22 +73,6 @@ public class Member implements Serializable{
 
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
-	}
-
-	public int getMemberGrade() {
-		return memberGrade;
-	}
-
-	public void setMemberGrade(int memberGrade) {
-		this.memberGrade = memberGrade;
-	}
-
-	public String getMemberRole() {
-		return memberRole;
-	}
-
-	public void setMemberRole(String memberRole) {
-		this.memberRole = memberRole;
 	}
 
 	public String getNickName() {
@@ -133,6 +115,22 @@ public class Member implements Serializable{
 		this.address = address;
 	}
 
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+
+	public String getMemberRole() {
+		return memberRole;
+	}
+
+	public void setMemberRole(String memberRole) {
+		this.memberRole = memberRole;
+	}
+
 	public Date getEnrollDate() {
 		return enrollDate;
 	}
@@ -160,11 +158,14 @@ public class Member implements Serializable{
 	@Override
 	public String toString() {
 		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", password=" + password + ", memberName="
-				+ memberName + ", memberGrade=" + memberGrade + ", memberRole=" + memberRole + ", nickName=" + nickName
-				+ ", ssn=" + ssn + ", email=" + email + ", phone=" + phone + ", address=" + address + ", enrollDate="
+				+ memberName + ", nickName=" + nickName + ", ssn=" + ssn + ", email=" + email + ", phone=" + phone
+				+ ", address=" + address + ", grade=" + grade + ", memberRole=" + memberRole + ", enrollDate="
 				+ enrollDate + ", delFlag=" + delFlag + ", delDate=" + delDate + "]";
 	}
-	
-	
 
+	
+	
+	
+	
+	
 }

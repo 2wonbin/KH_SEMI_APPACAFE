@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% 
-	Member member = (Member)session.getAttribute("memberLoggedIn"); 
+	Member member1 = (Member)session.getAttribute("memberLoggedIn"); 
 %>
 <!DOCTYPE html>
 <style>
@@ -18,8 +18,8 @@
 	            <div class="sidebar-sticky pt-3 ">
 	                <ul class="nav flex-column ">
 	                    <li class="nav-item">
-	                        <a class="nav-link active" href="#">
-	                           <span>게시판1</span>
+	                        <a class="nav-link active" href="<%= request.getContextPath()%>/board">
+	                           <span>자유게시판</span>
 	                        </a>
 	                        <a class="nav-link" href="#">
 	                           <span>게시판2</span>
@@ -31,7 +31,7 @@
 	                           <span>게시판4</span>
 	                        </a>
 	                        
-	                        <% if(member != null && "A".equals(member.getMemberRole())) { %>
+	                        <% if(member1 != null && "A".equals(member1.getMemberRole())) { %>
 	                        <a class="nav-link" href="<%= request.getContextPath()%>/admin/memberList">
 	                           <span>관리자페이지</span>
 	                        </a>

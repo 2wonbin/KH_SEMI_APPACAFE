@@ -65,7 +65,7 @@ public class AdminDao {
 					member.setEmail(rset.getString("email"));
 					member.setPhone(rset.getString("phone"));
 					member.setAddress(rset.getString("address"));
-					member.setMemberGrade(rset.getInt("member_grade"));
+					member.setGrade(rset.getInt("member_grade"));
 					member.setMemberRole(rset.getString("member_role"));
 					member.setEnrollDate(rset.getDate("enroll_date"));
 					member.setDelFlag(rset.getString("del_flag"));
@@ -153,7 +153,7 @@ public class AdminDao {
 					member.setEmail(rset.getString("email"));
 					member.setPhone(rset.getString("phone"));
 					member.setAddress(rset.getString("address"));
-					member.setMemberGrade(rset.getInt("member_grade"));
+					member.setGrade(rset.getInt("member_grade"));
 					member.setMemberRole(rset.getString("member_role"));
 					member.setEnrollDate(rset.getDate("enroll_date"));
 					member.setDelFlag(rset.getString("del_flag"));

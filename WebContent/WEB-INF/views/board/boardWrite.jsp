@@ -30,6 +30,7 @@ $(document).ready(function(){
                 <label for="content">내용</label>
                 <textarea class="form-control" id="boardContent" name="boardContent" rows="20"></textarea>
             </div>
+            <input type="hidden" name="boardWriter" value="<%= memberLoggedIn.getNickName() %>" />
         </form>
     </div>
 </div>

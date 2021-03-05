@@ -1,7 +1,5 @@
 package member.model.dao;
 
-import static common.JDBCTemplate.*;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,12 +9,13 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import member.model.vo.Member;
+import static common.JDBCTemplate.close;
 
 public class MemberDao {
 	
-		private Properties prop = new Properties();
-	
-		public MemberDao() {
+	private Properties prop = new Properties();
+
+	public MemberDao() {
 		String fileName = "/sql/member/member-query.properties";
 		String path = MemberDao.class.getResource(fileName).getPath();
 		try {
@@ -24,16 +23,47 @@ public class MemberDao {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public int addMember(Connection conn, Member member) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("addMember"); 
+		
+		try {
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getPassword());
+			pstmt.setString(3, member.getMemberName());
+			pstmt.setString(4, member.getNickName());
+			pstmt.setString(5, member.getSsn());
+			pstmt.setString(6, member.getEmail());
+			pstmt.setString(7, member.getPhone());
+			pstmt.setString(8, member.getAddress());
+			
+			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			//DML은 executeUpdate()
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
 		}
+		
+		return result;
+		
+	}
 
-	public Member selectOne(Connection conn, String memberId) {
+	public Member selectMember(Connection conn, String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String sql = prop.getProperty("selectOne");
+		String sql = prop.getProperty("selectMember");
 		Member member = null;
 		
 		try {
-			//1.PreparedStatement객체생성(미완성쿼리 값대입)
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberId);
 			
@@ -43,29 +73,27 @@ public class MemberDao {
 				member = new Member();
 				member.setMemberNo(rset.getInt("member_no"));
 				member.setMemberId(rset.getString("member_id"));
+				member.setPassword(rset.getString("password"));
 				member.setMemberName(rset.getString("member_name"));
 				member.setNickName(rset.getString("nickname"));
 				member.setSsn(rset.getString("ssn"));
 				member.setEmail(rset.getString("email"));
 				member.setPhone(rset.getString("phone"));
 				member.setAddress(rset.getString("address"));
-				member.setMemberGrade(rset.getInt("member_grade"));
+				member.setGrade(rset.getInt("member_grade"));
 				member.setMemberRole(rset.getString("member_role"));
 				member.setEnrollDate(rset.getDate("enroll_date"));
 				member.setDelFlag(rset.getString("del_flag"));
 				member.setDelDate(rset.getDate("del_date"));
-				
-				
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			//3.자원반납(ResultSet, PreparedStatement)
 			close(rset);
 			close(pstmt);
-			System.out.println("DAO@" + member);
 		}
+		
 		return member;
 	}
 

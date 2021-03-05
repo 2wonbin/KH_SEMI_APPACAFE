@@ -19,6 +19,9 @@ $(document).ready(function(){
 	});
 });
 </script>
+<style>
+	body { text-align : center;}
+</style>
 
 <h3 class="my-4">게시판</h3>
 
@@ -26,7 +29,7 @@ $(document).ready(function(){
     <div class="col-md-12 py-4">
 	    <!-- 테이블 -->
 	    <table class="table table-hover">
-	        <thead>
+	        <thead class="thead-dark">
 	            <tr>
 	                <th>글번호</th>                
 	                <th>제목</th>                
@@ -50,12 +53,14 @@ $(document).ready(function(){
     
 <div class="row">
     <div class="col-md-12">
+    <% if(memberLoggedIn != null) {%>
 	    <a href="boardWrite" id="writeBtn" class="btn btn-success btn-icon-split btn-lg float-right">
             <span class="icon text-white-50">
                 <i class="fas fa-pen"></i>
             </span>
-            <span class="text">글쓰기</span>
+            <span class="text text-white">글쓰기</span>
         </a>
+        <% } %>
     </div>
 </div>
     

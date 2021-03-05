@@ -54,6 +54,8 @@ public class BoardWriteServlet extends HttpServlet {
 		String boardOriginalFileName = multipartReq.getOriginalFileName("upFile");
 		String boardRenamedFileName = multipartReq.getFilesystemName("upFile");
 		
+		//insertBoard = insert into board values(seq_tb_board_no.nextval, ?, ?, ?, ?, ?,default,default)
+				
 		BoardVo board = 
 				new BoardVo(0, boardTitle, boardWriter, 
 						boardContent, boardOriginalFileName, boardRenamedFileName, 
@@ -64,9 +66,10 @@ public class BoardWriteServlet extends HttpServlet {
 		System.out.println("board-after@servlet = " + board);
 		
 		String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!"; 
-		String location = result > 0 ?
-							request.getContextPath() + "/boardDetail?boardNo=" + board.getBoardNo() : 
-								request.getContextPath() + "/board";
+		String location = request.getContextPath() + "/board";
+//				result > 0 ?
+//							request.getContextPath() + "/boardDetail?boardNo=" + board.getBoardNo() : 
+//								request.getContextPath() + "/board";
 							
 				
 		request.getSession().setAttribute("msg", msg);
