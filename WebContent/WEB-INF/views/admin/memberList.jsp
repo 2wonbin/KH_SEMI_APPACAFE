@@ -1,15 +1,15 @@
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ page import="java.util.*"%>
+<%@ page import="admin.model.vo.adminVo" %>
 <%
-	List<Member> list = (List<Member>)request.getAttribute("list");
-	System.out.println("gkgkgk");
+	List<adminVo> list = (List<adminVo>)request.getAttribute("list");
 	String searchType = request.getParameter("searchType");
 	String searchKeyword = request.getParameter("searchKeyword");
 %>
 <style>
-	div#search-container {margin:0 0 10px 0; padding:3px; background-color: rgba(0, 188, 212, 0.3);}
+	section {text-align : center;}
+	div#search-container {margin:0 0 10px 0; padding:3px; background-color: rgba(0, 0, 0, 0.8); color: white;}
 	div#search-memberId {display: <%= "member_Id".equals(searchType) || searchType == null ? "inline-block" : "none" %>;}
 	div#search-member_Name{display:<%= "member_Name".equals(searchType) ? "inline-block" : "none" %>;}
 </style>
@@ -34,9 +34,15 @@ $(function(){
 }	
 */
 function updateRole() {
-	var selectedd = document.getElementById("member-role");
-	var selectVal = selectedd.options[selectedd.selectedIndex].value;
+	var roleSelectedObject = document.getElementById("member-role");
+	var selectVal = roleSelectedObject.options[roleSelectedObject.selectedIndex].value;
 	document.getElementById("member_role").value = selectVal;
+	
+	var delFlagSelectedObject = document.getElementById("del-flag");
+	var delFlagSelectVal = delFlagSelectedObject.options[delFlagSelectedObject.selectedIndex].value;
+	document.getElementById("del_flag").value = delFlagSelectVal;
+	
+	alert("delFlagSelectVal : " + delFlagSelectVal);
 }
 </script>
 <!DOCTYPE html>
@@ -64,8 +70,8 @@ function updateRole() {
             </form>	
         </div>
     </div>
-	<table id="tbl-member">
-		<thead>
+	<table id="tbl-member" class="table table-light">
+		<thead class="thead-dark">
 			<tr>
 				<th>회원번호</th>
 				<th>아이디</th>
@@ -77,6 +83,8 @@ function updateRole() {
 				<th>이메일</th>
 				<th>전화번호</th>
 				<th>가입일</th>
+				<th>탈퇴여부</th>
+				<th>탈퇴일</th>
 				<th>수정</th>
 			</tr>
 		</thead>
@@ -84,36 +92,44 @@ function updateRole() {
 		<% if(list == null || list.isEmpty()) { %>
 			<%--조회된 결과가 없는 경우 --%>
 			<tr>
-				<td colspan="10" style="text-align:center;">
+				<td colspan="10" style="text-align:center; transform: translateX(15%);">
 					조회된 결과가 없습니다.
 				</td>
 			</tr>
 		
 		<% } else { 
-			for(Member m : list) { %>
+			for(adminVo admin : list) { %>
 			<%--조회된 결과가 있는 경우 --%>
 			<tr>
-				<td><%= m.getMember_no() %></td>
-				<td><%= m.getMember_Id() %></td>
-				<td><%= m.getMember_Name() %></td>
-				<td><%= m.getNickname() %></td>
+				<td><%= admin.getMember_no() %></td>
+				<td><%= admin.getMember_Id() %></td>
+				<td><%= admin.getMember_Name() %></td>
+				<td><%= admin.getNickname() %></td>
 				<td>
 					<%-- data속성 : 태그에 data를 직접 저장/불러오기 가능 --%>
 					<select id="member-role" class="member-role" data-member-id="<%= admin.getMember_role() %>" onchange="updateRole()">
-						<option value="A" <%= "A".equals(m.getMember_role()) ? "selected" : "" %>>관리자</option>		
-            			<option value="U" <%= "U".equals(m.getMember_role()) ? "selected" : "" %>>일반회원</option>
+						<option value="A" <%= "A".equals(admin.getMember_role()) ? "selected" : "" %>>관리자</option>		
+            			<option value="U" <%= "U".equals(admin.getMember_role()) ? "selected" : "" %>>일반회원</option>
 					</select>
 				</td>
-				<td><%= m.getMembergrade() %></td>
-				<td><%= m.getSsn() %></td>
-				<td><%= m.getEmail() != null ?  m.getEmail() : "" %></td>
-				<td><%= m.getPhone() %></td>
-				<td><%= m.getEnrollDate() %></td>
+				<td><%= admin.getMember_grade() %></td>
+				<td><%= admin.getSsn() %></td>
+				<td><%= admin.getEmail() != null ?  admin.getEmail() : "" %></td>
+				<td><%= admin.getPhone() %></td>
+				<td><%= admin.getEnroll_Date() %></td>
+				<td>
+					<select id="del-flag" class="del-flag" data-member-id="<%= admin.getDelFlag() %>" onchange="updateRole()">
+						<option value="N" <%= "N".equals(admin.getDelFlag()) ? "selected" : "" %>>부</option>		
+            			<option value="Y" <%= "Y".equals(admin.getDelFlag()) ? "selected" : "" %>>여</option>
+					</select>
+				</td>
+				<td><%= admin.getDelDate() == (null) ? "" : admin.getDelDate()%></td>
 				<td>
 					<form action="<%=request.getContextPath()%>/admin/updateUserRole">
-						<input type = "hidden" id = "member_role" name = "member_role" value = <%= admin.getMember_role() %>>
-						<input type = "hidden" id = "member-no" name = "member_no"   value = <%= admin.getMember_no() %>>
-						<button type ="submit">수정</button>
+						<input type = "hidden" id = "member_role" name = "member_role" 	value = <%= admin.getMember_role() 	%>>
+						<input type = "hidden" id = "member-no" name = "member_no"   	value = <%= admin.getMember_no() 	%>>
+						<input type = "hidden" id = "del_flag" name = "del_flag"		value = <%=admin.getDelFlag() 		%>>
+						<button type ="submit" class=" btn btn-primary">수정</button>
 					</form>
 				</td>
 			</tr>
@@ -122,7 +138,11 @@ function updateRole() {
 			
 		</tbody>
 	</table>
+	<%--
 	<div id="pageBar">
 		<%= request.getAttribute("pageBar") %>
 	</div>
+	
+	 --%>
+</section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

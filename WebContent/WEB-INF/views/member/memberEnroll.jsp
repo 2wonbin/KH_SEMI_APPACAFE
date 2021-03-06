@@ -8,18 +8,18 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-
-#enroll-container{
-	display:inline-block;
-}
+	.main-content{
+		justify-content: center;
+    	display: grid;
+	}
 	form{
 	width: 600px;
-	}
+	} 	
 </style>
 </head>
 <body>
-	<div id="enroll-container">
-	<h1>회원가입</h1>
+	<h1 style="text-align:center;">회원가입</h1>
+	<div id="enroll-container" style="display: inline-block; ">
 	<form
 		name="memberEnrollFrm" 
 		action=""
@@ -105,11 +105,12 @@
 			</tr>
 		</table>
 	</div>
-	<div>
+	<div id="btn-enroll-menu" style="text-align:center;">
 		<input type="submit" class="btn-primary" value="가입" >
 		<input type="reset" class="btn-danger" value="취소">
 	</div>
 	
 	</form>
+
 </body>
 </html>

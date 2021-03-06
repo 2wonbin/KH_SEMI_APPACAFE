@@ -7,26 +7,44 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 | 아빠카페</title>
+<style>
+	.main-content{
+		position: relative;
+		
+	}
+	#loginFrm{
+		text-align : center;
+		position:absolute;
+		display: inline-block;
+		width : 600px;
+		transform: translate(100%, 75%);
+		
+	}
+</style>
 </head>
 <body>
 <form 
 		id="loginFrm"
 		action="<%= request.getContextPath() %>/member/memberLogin"
 		method="POST">
-		<table>
+		<table class="table">
+		<h1>로그인</h1>
 			<tr>
 				<td>	
 					<input 
 						type="text" 
 						name="memberId" 
 						id="memberId" 
-						placeholder="아이디">
+						placeholder="아이디"
+						class="form-control-lg">
+						
 				</td>
-				<td><input type="submit" value="로그인" tabindex="3"></td>
-			</tr>
+				</tr>
 			<tr>
-				<td><input type="password" name="password" id="password" placeholder="비밀번호" tabindex="2"></td>
-				<td></td>
+				<td><input type="password" name="password" id="password" placeholder="비밀번호" class="form-control-lg"></td>
+				<tr>
+				<td><input type="submit" value="로그인" class="btn bg-primary text-white col-6 btn-lg"></td>
+			</tr>
 			</tr>
 		</table>
 	</form>

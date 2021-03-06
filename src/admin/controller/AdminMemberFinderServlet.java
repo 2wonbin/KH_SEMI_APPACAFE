@@ -20,12 +20,11 @@ import member.model.vo.Member;
  */
 @WebServlet("/admin/memberFinder")
 public class AdminMemberFinderServlet extends HttpServlet {
+	/*
 	private static final long serialVersionUID = 1L;
 	private AdminService adminService = new AdminService();
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 사용자 입력값 처리
 				String searchType = request.getParameter("searchType");
@@ -64,5 +63,5 @@ public class AdminMemberFinderServlet extends HttpServlet {
 		//3. view단 처리 ; forwarding처리 >> /WEB-INF/views/memberList.jsp
 		request.getRequestDispatcher("/WEB-INF/views/admin/memberList.jsp").forward(request, response);		//주소 잘 확인 할 것.
 	}
-
+	*/
 }

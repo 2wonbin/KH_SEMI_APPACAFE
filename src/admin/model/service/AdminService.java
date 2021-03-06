@@ -1,70 +1,40 @@
 package admin.model.service;
 
-import static common.JDBCTemplate.close;
-import static common.JDBCTemplate.commit;
-import static common.JDBCTemplate.getConnection;
-import static common.JDBCTemplate.rollback;
-
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
-import admin.model.dao.AdminDao;
+import javax.sql.ConnectionEvent;
+
+import admin.model.vo.adminVo;
 import member.model.vo.Member;
+import admin.model.dao.AdminDao;
+import static common.JDBCTemplate.*; 
 
 public class AdminService {
 	
-	AdminDao adminDao = new AdminDao();
+	private AdminDao adminDao = new AdminDao();
 
-	public List<Member> selectList(int currentPage, int numPerPage) {
-		//1.Connection객체 생성
+	public List<adminVo> selectList(adminVo searchVal) {
 		Connection conn = getConnection();
-		//2.dao요청
-		List<Member> list =  adminDao.selectList(conn, currentPage, numPerPage);
-		//4.자원반납
+		List<adminVo> list = adminDao.selectList(conn, searchVal);
 		close(conn);
 		return list;
-		
 	}
-
-	public int updateMemberRole(String memberId, String memberRole) {
-		int result = 0;
+	
+	public int updateUserRole(adminVo adminVo) {
 		Connection conn = getConnection();
-		result = adminDao.updateMemberRole(conn, memberId, memberRole);
-		
-		if(result>0)
+		System.out.println("SERVICE_1");
+		int result = adminDao.updateUserRole(conn, adminVo);
+		System.out.println("SERVICE - result : " + result);
+		if(result > 0) {
+			System.out.println("1");
 			commit(conn);
-		else 
+		} else {
+			System.out.println("0");
 			rollback(conn);
-		close(conn);
-		
+			close(conn);
+		}
 		return result;
-	}
-
-
-	public int selectTotalMembers() {
-		Connection conn = getConnection();
-		int result = adminDao.selectTotalMembers(conn);
-		close(conn);
-		return result;
-	}
-
-	public List<Member> selectMembersBy(Map<String, Object> param) {
-		//1.Connection객체 생성
-		Connection conn = getConnection();
-		//2.dao요청
-		List<Member> list = adminDao.selectMembersBy(conn, param);
-		//4.자원반납
-		close(conn);
-				
-		return list;
-	}
-
-	public int selectTotalMembersBy(Map<String, Object> param) {
-		Connection conn = getConnection();
-		int result = adminDao.selectTotalMembersBy(conn,param);
-		close(conn);
-		return result;
-		
 	}
 }

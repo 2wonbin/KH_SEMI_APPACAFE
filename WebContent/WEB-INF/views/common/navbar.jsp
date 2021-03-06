@@ -19,20 +19,20 @@
 	                <ul class="nav flex-column ">
 	                    <li class="nav-item">
 	                        <a class="nav-link active" href="<%= request.getContextPath()%>/board">
-	                           <span>자유게시판</span>
+	                           <span>게시판</span>
 	                        </a>
 	                        <a class="nav-link" href="#">
-	                           <span>게시판2</span>
+	                           <span>null</span>
 	                        </a>
 	                        <a class="nav-link" href="#">
-	                           <span>게시판3</span>
+	                           <span>null</span>
 	                        </a>
 	                        <a class="nav-link" href="#">
-	                           <span>게시판4</span>
+	                           <span>null</span>
 	                        </a>
 	                        
 	                        <% if(member1 != null && "A".equals(member1.getMemberRole())) { %>
-	                        <a class="nav-link" href="<%= request.getContextPath()%>/admin/memberList">
+	                        <a class="nav-link" href="<%= request.getContextPath()%>/admin/memberlist">
 	                           <span>관리자페이지</span>
 	                        </a>
 	                        <% } %>

@@ -13,209 +13,98 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import admin.model.vo.adminVo;
 import member.model.vo.Member;
 
-
-
 public class AdminDao {
-
-		private Properties prop = new Properties();
-		private Member member = null;
-
-		public AdminDao() {
-			String fileName = "/sql/admin/admin-query.properties";	// '/' = WEB-INF/Classes
-			String absPath = AdminDao.class.getResource(fileName).getPath();
-			try {
-				prop.load(new FileReader(absPath));
-			} catch (IOException e) {
-				e.printStackTrace();
+	
+	private Properties prop = new  Properties();
+	
+	public AdminDao() {		
+		String fileName = "/sql/admin/admin-query.properties";
+		String absPath = AdminDao.class.getResource(fileName).getPath();
+		try {
+			prop.load(new FileReader(absPath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public List<adminVo> selectList(Connection conn, adminVo searchVal) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("selectUserInfoList");
+		List<adminVo> list = null;
+		
+		try {
+			//1. PreparedStatement객체 생성
+			//2. 미완성 쿼리 값대입
+			pstmt = conn.prepareStatement(sql);
+			System.out.println("combo : " + searchVal.getViewCombo() + " content : " + searchVal.getViewContent());
+			pstmt.setString(1, searchVal.getViewCombo());
+			pstmt.setString(2, searchVal.getViewContent());
+			pstmt.setString(3, searchVal.getViewCombo());
+			pstmt.setString(4, searchVal.getViewContent());
+			pstmt.setString(5, searchVal.getViewCombo());
+			//1 : 1 ~ 10
+			//2 : 11 ~ 20
+			//3 : 21 ~ 30
+			//...
+			//12 : 111 ~ 120
+			
+			//3. 실행 및 ResultSet처리
+			rset = pstmt.executeQuery();
+			//4. Member --> List에 추가
+			list = new ArrayList<>();
+			while(rset.next()) {
+				adminVo member = new adminVo();
+				member.setMember_no(rset.getNString("member_no")); //회원번호
+				member.setMember_Id(rset.getString("member_id")); //회원 아이디
+				member.setNickname(rset.getString("nickname")); //회원 닉네임
+				member.setMember_role(rset.getString("member_role")); //회원 유형
+				member.setMember_grade(rset.getString("member_grade")); //회원 등급
+				member.setSsn(rset.getString("ssn")); //생년월일  (주민번호)
+				member.setPassword(rset.getString("password")); //패스워드??
+				member.setMember_Name(rset.getString("member_name")); // 회원 성명
+				member.setPhone(rset.getString("phone")); //회원 전화번호
+				member.setEmail(rset.getString("email")); //회원 이메일
+				member.setEnroll_Date(rset.getDate("enroll_date")); // 회원 가입일
+				member.setDelFlag(rset.getString("del_flag"));
+				member.setDelDate(rset.getDate("del_date"));
+				list.add(member);
 			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			//5. 자원반납
+			close(rset);
+			close(pstmt);
 		}
 		
-
-		public List<Member> selectList(Connection conn, int currentPage, int numPerPage) {
-			
-			List<Member> list = null;
-			
-			PreparedStatement pstmt = null;
-			ResultSet rset = null;
-			
-			String query = prop.getProperty("selectPagedList");
-			//select * from( select M.*, row_number() over(order by enroll_date desc) rnum from member M) 
-			//where rnum between ? and ?
-			try {
-				pstmt = conn.prepareStatement(query);
-				// 1 : 1 ~ 10
-				// 2 : 11 ~ 20
-				//......
-				//12 : 111 ~ 120
-				pstmt.setInt(1, (currentPage -1) * numPerPage + 1);
-				pstmt.setInt(2, (currentPage * numPerPage));
-				rset = pstmt.executeQuery();
-				list = new ArrayList<>();
-			
-				while(rset.next()) {
-					member = new Member();
-				
-					member.setMemberNo(rset.getInt("member_no"));
-					member.setMemberId(rset.getString("member_id"));
-					member.setMemberName(rset.getString("member_name"));
-					member.setNickName(rset.getString("nickname"));
-					member.setSsn(rset.getString("ssn"));
-					member.setEmail(rset.getString("email"));
-					member.setPhone(rset.getString("phone"));
-					member.setAddress(rset.getString("address"));
-					member.setGrade(rset.getInt("member_grade"));
-					member.setMemberRole(rset.getString("member_role"));
-					member.setEnrollDate(rset.getDate("enroll_date"));
-					member.setDelFlag(rset.getString("del_flag"));
-					member.setDelDate(rset.getDate("del_date"));
-					
-					list.add(member);
-
-				}
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			} finally {
-				close(rset);
-				close(pstmt);
-			}
-			return list;
+		return list;
+	}
+	
+	public int updateUserRole(Connection conn, adminVo adminVo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("updateUserRole");
+		try {
+			System.out.println("DAO - role : " + adminVo.getMember_role() + " no : " + adminVo.getMember_no() + " del_flag : " + adminVo.getDelFlag());
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, adminVo.getMember_role());
+			pstmt.setString(2, adminVo.getDelFlag());
+			pstmt.setString(3, adminVo.getDelFlag());
+			pstmt.setInt(4, Integer.parseInt(adminVo.getMember_no()));
+			System.out.println("DAO_1");
+			result = pstmt.executeUpdate();
+			System.out.println("DAO_2");
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
 		}
-
-
-		public int updateMemberRole(Connection conn, String memberId, String memberRole) {
-
-			int result = 0;
-			PreparedStatement pstmt = null;
-			String query = prop.getProperty("updateMemberRole"); 
-
-			try {
-				//미완성쿼리문을 가지고 객체생성.
-				pstmt = conn.prepareStatement(query);
-				//쿼리문미완성
-				pstmt.setString(1, memberRole);
-				pstmt.setString(2, memberId);
-				
-				//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
-				//DML은 executeUpdate() > 처리결과는 정수형으로 리턴
-				result = pstmt.executeUpdate();
-//				System.out.println("fromDao"+result);
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				close(pstmt);
-			}
-			
-			return result;
-		}
-
-
-		public List<Member> selectMembersBy(Connection conn, Map<String, Object> param) {
-			List<Member> list = new ArrayList<>();
-			PreparedStatement pstmt = null;
-			ResultSet rset = null;
-			
-			String sql = prop.getProperty("selectPagedMembersBy");
-			//select * from (select M.*, row_number() over(order by enroll_date desc) rnum from member M where # like ? ) where rnum between ? and ?
-			switch((String)param.get("searchType")) {
-			case "memberId" : sql = sql.replace("#", "member_id"); break;
-			case "memberName" : sql = sql.replace("#", "member_name"); break;
-			case "gender" : sql = sql.replace("#", "gender"); break;
-			}
-			
-			try{
-				//미완성쿼리문을 가지고 객체생성. 
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, "%" + param.get("searchKeyword") + "%");
-				
-				//1 : 1 ~ 10
-				//2 : 11 ~ 20
-				int cpage = (int)param.get("cpage");
-				int numPerPage = (int)param.get("numPerPage");
-				pstmt.setInt(2, (cpage - 1) * numPerPage + 1);
-				pstmt.setInt(3, cpage * numPerPage);
-				
-				
-				//쿼리문실행
-				//완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
-				rset = pstmt.executeQuery();
-				
-				while(rset.next()){
-					Member m = new Member();
-					member.setMemberNo(rset.getInt("member_no"));
-					member.setMemberId(rset.getString("member_id"));
-					member.setMemberName(rset.getString("member_name"));
-					member.setNickName(rset.getString("nickname"));
-					member.setSsn(rset.getString("ssn"));
-					member.setEmail(rset.getString("email"));
-					member.setPhone(rset.getString("phone"));
-					member.setAddress(rset.getString("address"));
-					member.setGrade(rset.getInt("member_grade"));
-					member.setMemberRole(rset.getString("member_role"));
-					member.setEnrollDate(rset.getDate("enroll_date"));
-					member.setDelFlag(rset.getString("del_flag"));
-					member.setDelDate(rset.getDate("del_date"));
-					list.add(m);
-				}
-			}catch(Exception e){
-				e.printStackTrace();
-			}finally{
-				close(rset);
-				close(pstmt);
-			}
-			
-			return list;
-		}
-
-
-		public int selectTotalMembers(Connection conn) {
-			PreparedStatement pstmt = null;
-			ResultSet rset = null;
-			int totalContents = 0;
-			String query = prop.getProperty("selectTotalMembers");
-			
-
-			try {
-				pstmt=conn.prepareStatement(query);
-				rset = pstmt.executeQuery();
-				if(rset.next()) {
-					totalContents = rset.getInt(1);//컬럼 순서로 가져온다.
-				}
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			} finally {
-				close(pstmt);
-			}
-			return totalContents;
-		}
-
-
-		public int selectTotalMembersBy(Connection conn, Map<String, Object> param) {
-			PreparedStatement pstmt = null;
-			ResultSet rset = null;
-			int totalContents = 0;
-			String query = prop.getProperty("selectTotalMembersBy");
-			//select count(*) from member where # like ?
-			String searchType = (String)param.get("searchType");
-			query = query.replace("#",searchType);
-			try {
-				pstmt=conn.prepareStatement(query);
-				pstmt.setString(1, "%"+param.get("searchKeyword")+"%");	//여기서 문자열 추가하는 것도 가능합니다. query에서 처리하는 방법과 같이 고민해볼 것.
-				rset = pstmt.executeQuery();
-				if(rset.next()) {
-					totalContents = rset.getInt(1);//컬럼 순서로 가져온다.
-				}
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			} finally {
-				close(pstmt);
-			}
-			return totalContents;
-		}
+		System.out.println("DAO - result : " + result);
+		return result;
+	}
 }
-

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  <body class="d-flex flex-column h-100">
+
     
 	        </div>
 	    </div>
