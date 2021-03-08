@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import common.util.MvcUtils;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
 /**
  * Servlet implementation class MemberLoginServlet
  */
-@WebServlet("/member/memberLogin")
+@WebServlet("/member/login")
 public class MemberLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,13 +26,15 @@ public class MemberLoginServlet extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/views/member/login.jsp")
 		   .forward(request, response);
 	}
-
+	
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String memberId = request.getParameter("memberId");
-		String password = request.getParameter("password");
+		String password = MvcUtils.getEncryptedPassword(request.getParameter("password"));
 		
 		Member member = memberService.selectMember(memberId);
-		
+		System.out.println(member);
+		System.out.println(password);
 		if(member != null && password.equals(member.getPassword())) {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("memberLoggedIn", member);

@@ -1,77 +1,53 @@
 package board.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.FileRenamePolicy;
-
 import board.model.service.BoardService;
 import board.model.vo.BoardVo;
-import common.MvcFileRenamePolicy;
 
-/**
- * Servlet implementation class BoardListServlet
- */
 @WebServlet("/boardWrite")
 public class BoardWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private BoardService boardService = new BoardService();
        
+	private BoardService boardService = new BoardService();
+	
     public BoardWriteServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		String boardType = request.getParameter("boardType");
+		
+		request.setAttribute("boardType", boardType);
 		request.getRequestDispatcher("/WEB-INF/views/board/boardWrite.jsp")
 		   .forward(request, response);
 	}
-	
-	
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String saveDirectory = getServletContext().getRealPath("/upload/board");
-		
-		int maxPostSize = 10 * 1024 * 1024;
-		
-		String encoding = "utf-8";
-		
-		FileRenamePolicy policy = new MvcFileRenamePolicy();
-		
-		MultipartRequest multipartReq = 
-				new MultipartRequest(request, saveDirectory, maxPostSize, encoding, policy);
-		
 
-		String boardTitle = multipartReq.getParameter("boardTitle");
-		String boardWriter= multipartReq.getParameter("boardWriter");
-		String boardContent = multipartReq.getParameter("boardContent");
-		String boardOriginalFileName = multipartReq.getOriginalFileName("upFile");
-		String boardRenamedFileName = multipartReq.getFilesystemName("upFile");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		
-		//insertBoard = insert into board values(seq_tb_board_no.nextval, ?, ?, ?, ?, ?,default,default)
-				
-		BoardVo board = 
-				new BoardVo(0, boardTitle, boardWriter, 
-						boardContent, boardOriginalFileName, boardRenamedFileName, 
-						null, 0);
-		System.out.println("board-before@servlet = " + board);
+		String boardTitle = request.getParameter("boardTitle");
+		String boardContent = request.getParameter("boardContent");
+		String boardType = request.getParameter("boardType");
+		
+		BoardVo board = new BoardVo();
+		board.setBoardType(boardType);
+		board.setBoardTitle(boardTitle);
+		board.setBoardContent(boardContent.replaceAll("(\r\n|\r|\n|\n\r)", " "));
 		
 		int result = boardService.insertBoard(board);
-		System.out.println("board-after@servlet = " + board);
-		
+		System.out.println(board.getBoardNo());
 		String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!"; 
-		String location = request.getContextPath() + "/board";
-//				result > 0 ?
-//							request.getContextPath() + "/boardDetail?boardNo=" + board.getBoardNo() : 
-//								request.getContextPath() + "/board";
-							
-				
+		String location = result > 0 ?
+							request.getContextPath() + "/boardDetail?boardType=" + boardType + "&boardNo=" + board.getBoardNo() : 
+								request.getContextPath() + "/boardList?boardType=" + boardType;
 		request.getSession().setAttribute("msg", msg);
 		response.sendRedirect(location);
 	}

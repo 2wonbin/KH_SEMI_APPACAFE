@@ -5,9 +5,6 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ include file="/WEB-INF/views/common/navbar.jsp" %>
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
 
 			<!-- 메인 캐러셀 -->
 			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

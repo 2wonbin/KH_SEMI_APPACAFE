@@ -9,26 +9,31 @@
 <style>
 .nav-link{
 	font-size: 30px;
+
+	transition-duration: 0.3s;
+}
+.nav-link:hover{
+	background-color : rgba(0,0,0,0.1);
 	border-bottom : 1px solid red;
 }
 </style>
 	<div class="container-fluid">
 	    <div class="row flex-nowrap">
-	        <nav class="d-md-block bg-white sidebar border-right">
-	            <div class="sidebar-sticky pt-3 ">
+	        <nav class="d-md-block bg-white sidebar border-right"  style="width: 200px;">
+	            <div class="sidebar-sticky pt-3">
 	                <ul class="nav flex-column ">
 	                    <li class="nav-item">
-	                        <a class="nav-link active" href="<%= request.getContextPath()%>/board">
-	                           <span>게시판</span>
-	                        </a>
+                <a class="nav-link" href="<%= request.getContextPath() %>/boardList?boardType=notice">
+                   <span>공지사항</span>
+                </a>
+	                        <a class="nav-link" href="<%= request.getContextPath() %>/boardList?boardType=free">
+                   <span>자유게시판</span>
+                </a>
 	                        <a class="nav-link" href="#">
 	                           <span>null</span>
 	                        </a>
-	                        <a class="nav-link" href="#">
-	                           <span>null</span>
-	                        </a>
-	                        <a class="nav-link" href="#">
-	                           <span>null</span>
+	                        <a class="nav-link active" href="<%= request.getContextPath()%>/joojakList">
+	                           <span>중고거래</span>
 	                        </a>
 	                        
 	                        <% if(member1 != null && "A".equals(member1.getMemberRole())) { %>

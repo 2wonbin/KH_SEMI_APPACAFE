@@ -80,7 +80,7 @@ public class MemberDao {
 				member.setEmail(rset.getString("email"));
 				member.setPhone(rset.getString("phone"));
 				member.setAddress(rset.getString("address"));
-				member.setGrade(rset.getInt("member_grade"));
+				member.setGrade(rset.getString("member_grade"));
 				member.setMemberRole(rset.getString("member_role"));
 				member.setEnrollDate(rset.getDate("enroll_date"));
 				member.setDelFlag(rset.getString("del_flag"));
@@ -95,6 +95,132 @@ public class MemberDao {
 		}
 		
 		return member;
+	}
+
+	public int updateMember(Connection conn, Member member) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("updateMember"); 
+		
+		try {
+			
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, member.getNickName());
+			pstmt.setString(2, member.getEmail());
+			pstmt.setString(3, member.getPhone());
+			pstmt.setString(4, member.getAddress());
+			pstmt.setString(5, member.getMemberId());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+		} finally {
+			
+			close(pstmt);
+			
+		}
+		
+		return result;
+	}
+
+	public int passwordChange(Connection conn, Member member) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("passwordChange"); 
+
+		try {
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, member.getPassword());
+			pstmt.setString(2, member.getMemberId());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+		} finally {
+			
+			close(pstmt);
+			
+		}
+		
+		return result;
+	}
+
+	public int deleteMember(Connection conn, String memberId) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("deleteMember"); 
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+		} finally {
+			
+			close(pstmt);
+			
+		}
+		
+		return result;
+	}
+
+	public Member checkNickName(Connection conn, String nickName) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("selectNickName");
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, nickName);
+			
+			//2.Statement실행 및 결과처리:ResultSet -> Member
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				member = new Member();
+				member.setMemberNo(rset.getInt("member_no"));
+				member.setMemberId(rset.getString("member_id"));
+				member.setPassword(rset.getString("password"));
+				member.setMemberName(rset.getString("member_name"));
+				member.setNickName(rset.getString("nickname"));
+				member.setSsn(rset.getString("ssn"));
+				member.setEmail(rset.getString("email"));
+				member.setPhone(rset.getString("phone"));
+				member.setAddress(rset.getString("address"));
+				member.setGrade(rset.getString("member_grade"));
+				member.setMemberRole(rset.getString("member_role"));
+				member.setEnrollDate(rset.getDate("enroll_date"));
+				member.setDelFlag(rset.getString("del_flag"));
+				member.setDelDate(rset.getDate("del_date"));
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+		} finally {
+			
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return member;
+		
 	}
 
 }

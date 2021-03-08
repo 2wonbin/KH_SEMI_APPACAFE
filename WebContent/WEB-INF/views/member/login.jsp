@@ -8,28 +8,27 @@
 <meta charset="UTF-8">
 <title>로그인 | 아빠카페</title>
 <style>
-	.main-content{
-		position: relative;
-		
+section{
+	text-align: center;
+}
+.tb-login{
+		width: 600px;
 	}
-	#loginFrm{
-		text-align : center;
-		position:absolute;
+	form{
 		display: inline-block;
-		width : 600px;
-		transform: translate(100%, 75%);
-		
 	}
 </style>
 </head>
 <body>
+<section>
+<h1 style="margin-top: 24px;">로그인</h1>
+
 <form 
 		id="loginFrm"
-		action="<%= request.getContextPath() %>/member/memberLogin"
+		action="<%= request.getContextPath() %>/member/login"
 		method="POST">
-		<table class="table">
-		<h1>로그인</h1>
-			<tr>
+		<table class="table table-light tb-login">
+		<tr>
 				<td>	
 					<input 
 						type="text" 
@@ -45,8 +44,12 @@
 				<tr>
 				<td><input type="submit" value="로그인" class="btn bg-primary text-white col-6 btn-lg"></td>
 			</tr>
-			</tr>
+		<tr>
+			<td></td>
+		</tr>
 		</table>
 	</form>
-</body>
-</html>
+
+</section>
+
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>

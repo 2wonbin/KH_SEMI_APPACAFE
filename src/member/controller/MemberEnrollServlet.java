@@ -1,7 +1,6 @@
 package member.controller;
 
 import java.io.IOException;
-import java.sql.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import common.util.MvcUtils;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
@@ -39,7 +39,7 @@ public class MemberEnrollServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String memberId = request.getParameter("memberId");
-		String password = request.getParameter("password");
+		String password = MvcUtils.getEncryptedPassword(request.getParameter("password"));
 		String memberName = request.getParameter("memberName");
 		String nickName = request.getParameter("nickName");
 		String ssn = request.getParameter("ssn");
@@ -50,8 +50,18 @@ public class MemberEnrollServlet extends HttpServlet {
 		Member member = new Member(0, memberId, password, memberName, nickName, ssn, email, phone, address, null, null, null, null, null);
 		
 		int result = memberService.addMember(member);
-		
+		String msg = "";
+		String loc = request.getContextPath();
 		String view = "/index.jsp";
+		
+		if(result > 0)
+			msg = "성공적으로 회원가입되었습니다.";
+		else 
+			msg = "회원등록에 실패했습니다.";	
+		
+		request.setAttribute("msg", msg);
+		request.setAttribute("loc", loc);
+		
 		RequestDispatcher reqDispatcher = request.getRequestDispatcher(view);
 		reqDispatcher.forward(request, response);
 	}

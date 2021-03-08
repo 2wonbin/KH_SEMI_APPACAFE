@@ -13,7 +13,7 @@ public class Member {
 	private String email;
 	private String phone;
 	private String address;
-	private int grade;
+	private String grade;
 	private String memberRole;
 	private Date enrollDate;
 	private String delFlag;
@@ -24,7 +24,7 @@ public class Member {
 	}
 
 	public Member(int memberNo, String memberId, String password, String memberName, String nickName, String ssn,
-			String email, String phone, String address, int grade, String memberRole, Date enrollDate,
+			String email, String phone, String address, String grade, String memberRole, Date enrollDate,
 			String delFlag, Date delDate) {
 		super();
 		this.memberNo = memberNo;
@@ -115,11 +115,11 @@ public class Member {
 		this.address = address;
 	}
 
-	public int getGrade() {
+	public String getGrade() {
 		return grade;
 	}
 
-	public void setGrade(int grade) {
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 

@@ -5,6 +5,7 @@ import java.sql.Date;
 public class BoardVo {
 
 	private int boardNo;
+	private String boardType;
 	private String boardTitle;
 	private String boardWriter;
 	private String boardContent;
@@ -19,10 +20,11 @@ public class BoardVo {
 
 	}
 
-	public BoardVo(int boardNo, String boardTitle, String boardWriter, String boardContent, String boardOriginalFileName,
+	public BoardVo(int boardNo ,String boardType, String boardTitle, String boardWriter, String boardContent, String boardOriginalFileName,
 			String boardRenamedFileName, Date boardDate, int boardReadCount) {
 		super();
 		this.boardNo = boardNo;
+		this.boardType = boardType;
 		this.boardTitle = boardTitle;
 		this.boardWriter = boardWriter;
 		this.boardContent = boardContent;
@@ -38,6 +40,14 @@ public class BoardVo {
 
 	public void setBoardNo(int boardNo) {
 		this.boardNo = boardNo;
+	}
+	
+	public String getBoardType() {
+		return boardType;
+	}
+	
+	public void setBoardType(String boardType) {
+		this.boardType = boardType;
 	}
 
 	public String getBoardTitle() {

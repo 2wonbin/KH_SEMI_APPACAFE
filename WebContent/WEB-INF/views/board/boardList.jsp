@@ -6,6 +6,7 @@
 <%@ page import="board.model.vo.BoardVo" %>
 <%
     List<BoardVo> list = (List<BoardVo>)request.getAttribute("list");
+	String boardType = (String)request.getAttribute("boardType");
 %>
 
 
@@ -14,22 +15,29 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	var boardType = '<%=boardType%>';
+	
 	$('.listTr').on('click', function(){
-	    
+	    var boardNo = $(this).children('.boardNo').text();
+		location.href = "boardDetail?boardType=" + boardType + "&boardNo=" + boardNo;
+	});
+	
+	$('#writeBtn').on('click', function(){
+		location.href = "boardWrite?boardType=" + boardType;
 	});
 });
 </script>
-<style>
-	body { text-align : center;}
-</style>
-
-<h3 class="my-4">게시판</h3>
+<%if(boardType.equals("free")) {%>
+<h3 class="my-4">자유게시판</h3>
+<%}else if(boardType.equals("notice")) {%>
+<h3 class="my-4">공지게시판</h3>
+<%} %>
 
 <div class="row">
     <div class="col-md-12 py-4">
 	    <!-- 테이블 -->
 	    <table class="table table-hover">
-	        <thead class="thead-dark">
+	        <thead>
 	            <tr>
 	                <th>글번호</th>                
 	                <th>제목</th>                
@@ -40,7 +48,7 @@ $(document).ready(function(){
 	        <tbody>
 	            <%for(BoardVo board:list){ %>
 	            <tr class="listTr" role="button">
-	            	<td><%=board.getBoardNo() %></td>
+	            	<td class="boardNo"><%=board.getBoardNo() %></td>
 	            	<td><%=board.getBoardTitle() %></td>
 	            	<td><%=board.getBoardWriter() %></td>
 	            	<td><%=board.getBoardDate() %></td>
@@ -53,14 +61,12 @@ $(document).ready(function(){
     
 <div class="row">
     <div class="col-md-12">
-    <% if(memberLoggedIn != null) {%>
-	    <a href="boardWrite" id="writeBtn" class="btn btn-success btn-icon-split btn-lg float-right">
+	    <a id="writeBtn" class="btn btn-success btn-icon-split btn-lg float-right">
             <span class="icon text-white-50">
                 <i class="fas fa-pen"></i>
             </span>
             <span class="text text-white">글쓰기</span>
         </a>
-        <% } %>
     </div>
 </div>
     
