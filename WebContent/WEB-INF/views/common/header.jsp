@@ -45,20 +45,44 @@
 	    </a>
 	    <% if(memberLoggedIn == null) { %>
 	    <div id="connect-link-btn">
+	    <table>
+	    <tr>
+	    <td>
 	    <form style="display: inline;" class="form-inline" action="<%= request.getContextPath()%>/member/login" method="GET">
-		    <button class="btn btn-primary my-2 my-sm-0 login-btn" value="login">로그인</button>
+		    <button class="btn btn-primary my-2 my-sm-0 login-btn btn-group btn-group-lg" value="login">로그인</button>
 		</form>
 	    <input 
 		type="button" 
 		value="회원가입"
-		class="btn btn-success my-2 my-sm-0"
+		class="btn btn-success my-2 my-sm-0 btn-group btn-group-lg"
 		onclick="location.href='<%= request.getContextPath() %>/member/memberEnroll';">
-	    </div>
+		</div>
+	    </td>
+	    
+	    </tr>
+
+	    <tr>
+	    <td>
+		<input 
+								type="button" 
+								class="btn btn-info btn-header"
+								value="아이디찾기"
+								onclick="location.href='<%= request.getContextPath() %>/member/findId';">
+							
+							<input 
+								type="button" 
+								class="btn btn-info btn-header"
+								value="비밀번호찾기"
+								onclick="location.href='<%= request.getContextPath() %>/member/findPassword';">
+	    </td>
+	    </tr>
+
+	    </table>
 		<% } else { %>
 			<div class="user-info" style="text-align: center;">
 			<h3 class="text-white"><%= memberLoggedIn.getNickName() %>님. 안녕하세요.</h1>
 			<div>
-			<input 
+							<input 	
 								type="button" 
 								class="btn btn-primary"
 								value="내 정보보기" 
@@ -69,13 +93,18 @@
 								class="btn btn-danger"
 								value="로그아웃" 
 								onclick="location.href='<%= request.getContextPath() %>/member/logout'; "/>
-							<input 
+							
+							 <input 
 								type="button" 
 								class="btn btn-info"
 								value="✉" 
 								onclick="popupMemoList()"/>
-								</div>
+							 
+							
 			</div>
+			
+							
+			
 			
 			<script>
 			function popupMemoList() {

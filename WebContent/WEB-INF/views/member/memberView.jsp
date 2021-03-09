@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="member.model.vo.Member"%>
+
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ include file="/WEB-INF/views/common/navbar.jsp" %>
 <%
-	Member member = (Member)request.getAttribute("member");
 	
-	String birthDay = (member.getSsn()).substring(0, 6);
 	
-	String gender = (member.getSsn()).substring(6, 7);
+	String birthDay = (memberLoggedIn.getSsn()).substring(0, 6);
+	
+	String gender = (memberLoggedIn.getSsn()).substring(6, 7);
 	
 	int firstNum = Integer.parseInt(gender);
 	
@@ -18,10 +18,16 @@
 		gender = "여자";
 	}
 	
+	String memberRole = "A".equals((memberLoggedIn.getMemberRole())) ? "관리자" : "일반" ;
+	
 	 msg = (String)session.getAttribute("msg");
 	if(msg != null) session.removeAttribute("msg");
 %>
-
+<style>
+	th{
+		width: 200px;
+	}
+</style>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,11 +36,11 @@
 <style>
 	.main-content{
 		justify-content: center;
-    	display: grid;
-    	text-align:center;
-	}
+    display: block;
+    text-align: -webkit-center;
+    }
 	form{
-	width: 600px;
+	width: 1000px;
 	
 	}
 	input:read-only{
@@ -58,13 +64,13 @@
 	}
 	
 	function updatePassword(){
-		location.href = "<%= request.getContextPath() %>/member/passwordChange?memberId=<%= member.getMemberId() %>";
+		location.href = "<%= request.getContextPath() %>/member/passwordChange?memberId=<%= memberLoggedIn.getMemberId() %>";
 	}
 	
 	function deleteMember(){
 	    var bool = confirm("정말로 탈퇴하시겠습니까?");
 	    if(bool)
-	        location.href = "<%=request.getContextPath() %>/member/memberDelete?memberId=<%=member.getMemberId()%>";
+	        location.href = "<%=request.getContextPath() %>/member/memberDelete?memberId=<%=memberLoggedIn.getMemberId()%>";
 	}
 	
 	function checkNickNameDuplicate(){
@@ -129,17 +135,17 @@
 	
 	<h2 style="text-align:center;">회원 정보</h2>
 	<form id="memberUpdateFrm" method="POST" style="text-align:center;">
-		<table class="table table-light">
+			<table class="table table-light">
 			<tr>
 				<th>아이디</th>
 				<td>
-					<input type="text" name="memberId" id="memberId_" value="<%= member.getMemberId() %>" readonly>
+					<input type="text" name="memberId" id="memberId_" value="<%= memberLoggedIn.getMemberId() %>" readonly>
 				</td>
 			</tr>
 			<tr>
 				<th>이름</th>
 				<td>	
-				<input type="text"  name="memberName" id="memberName" value="<%= member.getMemberName() %>" readonly><br>
+				<input type="text"  name="memberName" id="memberName" value="<%= memberLoggedIn.getMemberName() %>" readonly><br>
 				</td>
 			</tr>
 			<tr>
@@ -151,9 +157,7 @@
 			<tr>
 				<th>닉네임</th>
 				<td>	
-					<input type="text" name="nickName" id="nickName" value="<%= member.getNickName() %>"  required><br>
-					<input type="button" value="중복검사" onclick="checkNickNameDuplicate();"/>
-					<input type="hidden" id="nickNameValid" value="0" />
+				<input type="text" name="nickName" id="nickName" value="<%= memberLoggedIn.getNickName() %>"  required><br>
 				</td>
 			</tr>
 			<tr>
@@ -165,25 +169,33 @@
 			<tr>
 				<th>이메일</th>
 				<td>	
-					<input type="email" name="email" id="email" value="<%= member.getEmail() != null ? member.getEmail() : "" %>"><br>
+					<input type="email" name="email" id="email" value="<%= memberLoggedIn.getEmail() != null ? member.getEmail() : "" %>"><br>
 				</td>
 			</tr>
 			<tr>
 				<th>휴대폰</th>
 				<td>	
-					<input type="tel" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" value="<%= member.getPhone() %>" required><br>
+					<input type="tel" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" value="<%= memberLoggedIn.getPhone() %>" required><br>
 				</td>
 			</tr>
 			<tr>
-				<th>주소</th>
+				<th>우편번호</th>
 				<td>	
-					<input type="text" placeholder="정확한 주소를 입력해주세요." name="address" id="address" value="<%= member.getAddress() != null ?  member.getAddress() : "" %>"><br>
+					<input type="text" name="zoneCode" id="zoneCode" value="<%= memberLoggedIn.getZoneCode() != null ?  memberLoggedIn.getZoneCode() : "" %>"><br>
+				</td>
+				<th>도로명주소</th>
+				<td>	
+					<input type="text" name="roadAddress" id="roadAddress" value="<%= memberLoggedIn.getRoadAddress() != null ?  memberLoggedIn.getRoadAddress() : "" %>"><br>
+				</td>
+				<th>상세주소</th>
+				<td>	
+					<input type="text" name="detail" id="detail" value="<%= memberLoggedIn.getDetail() != null ?  memberLoggedIn.getDetail() : "" %>"><br>
 				</td>
 			</tr>
 			<tr>
-				<th>회원등급</th>
+				<th>회원권한</th>
 				<td>	
-				<input type="text"  name="memberGrade" id="memberGrade" value="<%= member.getGrade() %>"  readonly><br>
+				<input type="text"  name="memberGrade" id="memberGrade" value="<%= memberRole %>"  readonly><br>
 				</td>
 			</tr>
 		</table>

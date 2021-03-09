@@ -41,7 +41,18 @@ public class MemberDao {
 			pstmt.setString(5, member.getSsn());
 			pstmt.setString(6, member.getEmail());
 			pstmt.setString(7, member.getPhone());
-			pstmt.setString(8, member.getAddress());
+			pstmt.setString(8, member.getZoneCode());
+			pstmt.setString(9, member.getRoadAddress());
+			pstmt.setString(10, member.getDetail());
+			pstmt.setString(11, member.getPasswordQuestion());
+			
+//			String zoneCode = member.getZoneCode();
+//			String roadAddress = member.getRoadAddress();
+//			String detail = member.getDetail();
+			
+//			System.out.println(zoneCode);
+//			System.out.println(roadAddress);
+//			System.out.println(detail);
 			
 			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
 			//DML은 executeUpdate()
@@ -79,8 +90,9 @@ public class MemberDao {
 				member.setSsn(rset.getString("ssn"));
 				member.setEmail(rset.getString("email"));
 				member.setPhone(rset.getString("phone"));
-				member.setAddress(rset.getString("address"));
-				member.setGrade(rset.getString("member_grade"));
+				member.setZoneCode(rset.getString("zone_code"));
+				member.setRoadAddress(rset.getString("road_address"));
+				member.setDetail(rset.getString("detail"));
 				member.setMemberRole(rset.getString("member_role"));
 				member.setEnrollDate(rset.getDate("enroll_date"));
 				member.setDelFlag(rset.getString("del_flag"));
@@ -109,8 +121,13 @@ public class MemberDao {
 			pstmt.setString(1, member.getNickName());
 			pstmt.setString(2, member.getEmail());
 			pstmt.setString(3, member.getPhone());
-			pstmt.setString(4, member.getAddress());
-			pstmt.setString(5, member.getMemberId());
+			pstmt.setString(4, member.getZoneCode());
+			pstmt.setString(5, member.getRoadAddress());
+			pstmt.setString(6, member.getDetail());
+			pstmt.setString(7, member.getMemberId());
+			
+			String t = member.getNickName();
+			System.out.println(t);
 			
 			result = pstmt.executeUpdate();
 			
@@ -200,12 +217,15 @@ public class MemberDao {
 				member.setSsn(rset.getString("ssn"));
 				member.setEmail(rset.getString("email"));
 				member.setPhone(rset.getString("phone"));
-				member.setAddress(rset.getString("address"));
+				member.setZoneCode(rset.getString("zone_code"));
+				member.setRoadAddress(rset.getString("road_address"));
+				member.setDetail(rset.getString("detail"));
 				member.setGrade(rset.getString("member_grade"));
 				member.setMemberRole(rset.getString("member_role"));
 				member.setEnrollDate(rset.getDate("enroll_date"));
 				member.setDelFlag(rset.getString("del_flag"));
 				member.setDelDate(rset.getDate("del_date"));
+				member.setPasswordQuestion(rset.getString("password_question"));
 			}
 			
 		} catch (SQLException e) {
@@ -221,6 +241,61 @@ public class MemberDao {
 		
 		return member;
 		
+	}
+
+	public Member findId(Connection conn, String memberName, String ssn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findId");
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberName);
+			pstmt.setString(2, ssn);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				member = new Member();
+				member.setMemberId(rset.getString("member_id"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return member;
+	}
+
+	public Member findPassword(Connection conn, String memberId, String ssn, String answer) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findPassword");
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, ssn);
+			pstmt.setString(3, answer);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				member = new Member();
+				member.setMemberId(rset.getString("member_id"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return member;
 	}
 
 }

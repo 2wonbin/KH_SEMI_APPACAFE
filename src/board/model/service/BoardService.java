@@ -14,6 +14,7 @@ import board.model.dao.BoardDao;
 import board.model.vo.BoardComment;
 import board.model.vo.BoardVo;
 import board.model.vo.SellBoard;
+import board.model.vo.SellBoardComment;
 
 
 public class BoardService {
@@ -164,6 +165,34 @@ public class BoardService {
 			commit(conn);
 		else 
 			rollback(conn);
+		close(conn);
+		return result;
+	}
+	
+	public List<SellBoardComment> selectSellCommentList(int boardNo) {
+		Connection conn = getConnection();
+		List<SellBoardComment> list= boardDao.selectSellCommentList(conn, boardNo);
+		close(conn);
+		return list;
+	}
+	
+	public int insertSellBoardComment(SellBoardComment bc) {
+		Connection conn = getConnection();
+		int result = boardDao.insertSellBoardComment(conn, bc);
+		if(result>0)
+			commit(conn);
+		else 
+			rollback(conn);
+		close(conn);
+		return result;
+
+	}
+
+	public int deleteSellBoard(int boardNo) {
+		Connection conn = getConnection();
+		int result = boardDao.deleteSellBoard(conn, boardNo);
+		if(result > 0) commit(conn);
+		else rollback(conn);
 		close(conn);
 		return result;
 	}

@@ -20,6 +20,7 @@ import board.model.exception.BoardException;
 import board.model.vo.BoardComment;
 import board.model.vo.BoardVo;
 import board.model.vo.SellBoard;
+import board.model.vo.SellBoardComment;
 
 
 
@@ -174,16 +175,15 @@ public class BoardDao {
 			while(rset.next()){
 
 				SellBoard b = new SellBoard();
-				b.setBoardNo(rset.getInt("board_no"));
-				b.setBoardTitle(rset.getString("board_title"));
+				b.setBoardNo(rset.getInt("sell_board_no"));
+				b.setBoardTitle(rset.getString("sell_board_title"));
 				b.setSeller(rset.getString("Seller"));
-				b.setBoardContent(rset.getString("board_content"));
-				b.setBoardOriginalFileName(rset.getString("board_original_filename"));
-				b.setBoardRenamedFileName(rset.getString("board_renamed_filename"));
-				b.setBoardDate(rset.getDate("board_date"));
-				b.setBoardReadCount(rset.getInt("board_read_count"));
+				b.setBoardContent(rset.getString("sell_board_content"));
+				b.setBoardOriginalFileName(rset.getString("sell_board_original_filename"));
+				b.setBoardRenamedFileName(rset.getString("sell_board_renamed_filename"));
+				b.setBoardDate(rset.getDate("sell_board_date"));
+				b.setBoardReadCount(rset.getInt("sell_board_read_count"));
 				list.add(b);
-				
 			}
 			
 		}catch(Exception e){
@@ -211,6 +211,7 @@ public class BoardDao {
 			pstmt.setString(5, sellBoard.getBoardOriginalFileName());
 			pstmt.setString(6, sellBoard.getBoardRenamedFileName());
 			pstmt.setInt(7, sellBoard.getPrice());
+			
 			
 			
 			result = pstmt.executeUpdate();
@@ -288,16 +289,16 @@ public class BoardDao {
 			while(rset.next()){
 				b = new SellBoard();
 				//컬럼명은 대소문자 구분이 없다.
-				b.setBoardNo(rset.getInt("board_no"));
-				b.setBoardTitle(rset.getString("board_title"));
+				b.setBoardNo(rset.getInt("sell_board_no"));
+				b.setBoardTitle(rset.getString("sell_board_title"));
 				b.setProductName(rset.getString("ProductName"));
 				b.setSeller(rset.getString("Seller"));
-				b.setBoardContent(rset.getString("board_content"));
-				b.setBoardOriginalFileName(rset.getString("board_original_filename"));
-				b.setBoardRenamedFileName(rset.getString("board_renamed_filename"));
+				b.setBoardContent(rset.getString("sell_board_content"));
+				b.setBoardOriginalFileName(rset.getString("sell_board_original_filename"));
+				b.setBoardRenamedFileName(rset.getString("sell_board_renamed_filename"));
 				b.setPrice(rset.getInt("PRICE"));
-				b.setBoardDate(rset.getDate("board_date"));
-				b.setBoardReadCount(rset.getInt("board_read_count"));
+				b.setBoardDate(rset.getDate("sell_board_date"));
+				b.setBoardReadCount(rset.getInt("sell_board_read_count"));
 			}
 			
 		}catch(Exception e){
@@ -539,5 +540,87 @@ public class BoardDao {
 		}
 		return result;
 	}
+	
+	public List<SellBoardComment> selectSellCommentList(Connection conn, int boardNo) {
+		List<SellBoardComment> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectSellCommentList");
+		
+		try{
+			//미완성쿼리문을 가지고 객체생성. 
+			pstmt = conn.prepareStatement(query);
+			
+			//시작 rownum과 마지막 rownum 구하는 공식
+			pstmt.setInt(1, boardNo);
+			
+			//쿼리문실행
+			//완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()){
+				SellBoardComment bc = new SellBoardComment();
+				//컬럼명은 대소문자 구분이 없다.
+				bc.setSellBoardCommentNo(rset.getInt("Sell_board_comment_no"));
+				bc.setSellBoardCommentLevel(rset.getInt("Sell_board_comment_level"));
+				bc.setSellBoardCommentWriter(rset.getString("Sell_board_comment_writer"));
+				bc.setSellBoardCommentContent(rset.getString("Sell_board_comment_content"));
+				bc.setSellBoardRef(rset.getInt("Sell_board_ref"));
+				bc.setSellBoardCommentRef(rset.getInt("Sell_board_comment_ref"));//null인 참조댓글필드는 0값이 대입됨.
+				bc.setSellBoardCommentDate(rset.getDate("Sell_board_comment_date"));
+				list.add(bc);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
 
+	public int insertSellBoardComment(Connection conn, SellBoardComment bc) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("insertSellBoardComment"); 
+
+		try {
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
+			pstmt.setInt(1, bc.getSellBoardCommentLevel());
+			pstmt.setString(2, bc.getSellBoardCommentWriter());
+			pstmt.setString(3, bc.getSellBoardCommentContent());
+			pstmt.setInt(4, bc.getSellBoardRef());
+			pstmt.setObject(5, bc.getSellBoardCommentRef() != 0 ? 
+									bc.getSellBoardCommentRef() : 
+										null);// 댓글인 경우 0번 댓글을 참조
+			
+		
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteSellBoard(Connection conn, int boardNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteSellBoard");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 }

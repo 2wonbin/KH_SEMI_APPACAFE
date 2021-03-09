@@ -36,7 +36,7 @@ span#duplicated{color:red; font-weight:bold;}
 	function confirmNickName(){
 		//opener : 팝업을 연 부모창의 window객체
 		var $frm = $(opener.document.memberEnrollFrm);
-		$frm.find("#nickName_").val("<%= nickName %>");
+		$frm.find("#nickName").val("<%= nickName %>");
 		$frm.find("#nickNameValid").val(1);
 		
 		close();
@@ -45,7 +45,7 @@ span#duplicated{color:red; font-weight:bold;}
 	function confirmUpdateNickName(){
 		//opener : 팝업을 연 부모창의 window객체
 		var $frm = $(opener.document.getElementById("memberUpdateFrm"));
-		$frm.find("#nickName").val("<%= nickName %>");
+		$frm.find("#nickName_").val("<%= nickName %>");
 		$frm.find("#nickNameValid").val(1);
 		
 		close();
@@ -71,7 +71,7 @@ span#duplicated{color:red; font-weight:bold;}
 				method="POST"
 				name="checkIdDuplicateFrm">
 				<input type="text" name="nickName" id="nickName_" placeholder="닉네임"/>
-				<input type="button" value="중복검사" onclick="checkNickNameDuplicate();" />
+				<input type="button" value="중복검사" onclick="confirmUpdateNickName();" />
 			</form>
 		<% } %>
 	</div>

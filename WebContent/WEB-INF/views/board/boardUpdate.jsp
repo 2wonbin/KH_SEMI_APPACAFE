@@ -58,6 +58,7 @@ $(document).ready(function(){
             
             <input type="hidden" name="boardNo" value="<%=board.getBoardNo()%>">
             <input type="hidden" name="boardType" value="<%=board.getBoardType()%>">
+            <input type="hidden" name="boardWriter" value="<%=board.getBoardWriter()%>">
         </form>
     </div>
 </div>

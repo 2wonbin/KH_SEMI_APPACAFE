@@ -20,10 +20,10 @@ $(document).ready(function(){
 });
 </script>
 <style>
-	section { text-align : center;}
+	
 </style>
 <section>
-<h3 class="my-4">게시판</h3>
+<h3 class="my-4">중고거래 게시판</h3>
 
 <div class="row">
     <div class="col-md-12 py-4">

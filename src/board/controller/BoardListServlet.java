@@ -24,8 +24,6 @@ public class BoardListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		request.setCharacterEncoding("UTF-8");
 		try {
 			final int numPerPage = 5;
 			int cpage = 1;
@@ -41,7 +39,7 @@ public class BoardListServlet extends HttpServlet {
 			int totalContents = boardService.selectBoardCount(boardType);
 			
 			String url = request.getRequestURI();
-			String pageBar = CommonUtil.getPageBar(totalContents, cpage, numPerPage, url);
+			String pageBar = CommonUtil.getPageBar(totalContents, cpage, numPerPage, url, boardType);
 			
 			request.setAttribute("boardType", boardType);
 			request.setAttribute("list",list);

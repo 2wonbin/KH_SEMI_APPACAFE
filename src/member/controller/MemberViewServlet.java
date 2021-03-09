@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import member.model.service.MemberService;
 import member.model.vo.Member;
@@ -28,8 +29,8 @@ public class MemberViewServlet extends HttpServlet {
 		String memberId = request.getParameter("memberId");
 		
 		Member member = memberService.selectMember(memberId);
-		
-		request.setAttribute("member", member);
+		HttpSession session = request.getSession(true);
+		session.setAttribute("memberLoggedIn", member);
 		request.getRequestDispatcher("/WEB-INF/views/member/memberView.jsp")
 			   .forward(request, response);
 	}

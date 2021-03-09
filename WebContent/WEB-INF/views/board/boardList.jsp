@@ -15,10 +15,17 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	<% if(memberLoggedIn == null) { %>
+		alert('로그인을 먼저 해주세요.');
+		location.href="<%= request.getContextPath() %>";
+	<%}%>
+	
 	var boardType = '<%=boardType%>';
 	
 	$('.listTr').on('click', function(){
 	    var boardNo = $(this).children('.boardNo').text();
+
 		location.href = "boardDetail?boardType=" + boardType + "&boardNo=" + boardNo;
 	});
 	
@@ -39,19 +46,20 @@ $(document).ready(function(){
 	    <table class="table table-hover">
 	        <thead>
 	            <tr>
-	                <th>글번호</th>                
 	                <th>제목</th>                
 	                <th>작성자</th>                
 	                <th>작성일</th>                
+	                <th>조회수</th>                
 	            </tr>
 	        </thead>
 	        <tbody>
 	            <%for(BoardVo board:list){ %>
 	            <tr class="listTr" role="button">
-	            	<td class="boardNo"><%=board.getBoardNo() %></td>
+	            	<td class="boardNo" style="display: none;"><%=board.getBoardNo() %></td>
 	            	<td><%=board.getBoardTitle() %></td>
 	            	<td><%=board.getBoardWriter() %></td>
 	            	<td><%=board.getBoardDate() %></td>
+	            	<td><%=board.getBoardReadCount() %></td>
 	            </tr>
 	            <%} %>
 	        </tbody>
@@ -61,12 +69,24 @@ $(document).ready(function(){
     
 <div class="row">
     <div class="col-md-12">
+    	<%if(boardType.equals("free")) {%>
+	    <a id="writeBtn" class="btn btn-success btn-icon-split btn-lg float-right">
+            <span class="icon text-white-50">
+                <i class="fas fa-pen"></i>
+            </span>
+            <span class="text">글쓰기</span>
+        </a>
+		<%
+		}else if(boardType.equals("notice") && memberLoggedIn != null) {
+			if(memberLoggedIn.getMemberRole().equals("A")){
+		%>
 	    <a id="writeBtn" class="btn btn-success btn-icon-split btn-lg float-right">
             <span class="icon text-white-50">
                 <i class="fas fa-pen"></i>
             </span>
             <span class="text text-white">글쓰기</span>
         </a>
+		<%}}%>
     </div>
 </div>
     

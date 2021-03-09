@@ -49,7 +49,7 @@ public class JoojakListServlet extends HttpServlet {
 			int totalContents = boardService.selectSellBoardCount();
 			
 			String url = request.getRequestURI();
-			String pageBar = CommonUtil.getPageBar(totalContents, cPage, numPerPage, url);
+			String pageBar = CommonUtil.getPageBarSell(totalContents, cPage, numPerPage, url);
 			
 			request.setAttribute("list",list);
 			request.setAttribute("pageBar",pageBar);

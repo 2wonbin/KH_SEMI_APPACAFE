@@ -4,12 +4,18 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ include file="/WEB-INF/views/common/navbar.jsp" %>
 
-<% String boardType = (String)request.getAttribute("boardType"); %>
+<% 
+ 	String boardType = (String)request.getAttribute("boardType");
+ %>
 <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	<% if(memberLoggedIn == null) { %>
+		alert('로그인을 먼저 해주세요.');
+		location.href="<%= request.getContextPath() %>";
+	<%}%>
+	
 	var boardType = '<%=boardType%>';
-	console.log(boardType);
 	
 	CKEDITOR.replace('boardContent',{
 		height : 400
@@ -53,6 +59,7 @@ $(document).ready(function(){
                 <textarea class="form-control" id="boardContent" name="boardContent"></textarea>
             </div>
             <input type="hidden" name="boardType" value="<%=boardType%>"/>
+            <input type="hidden" name="boardWriter" value="<%=memberLoggedIn.getMemberId()%>"/>
         </form>
     </div>
 </div>
@@ -63,7 +70,7 @@ $(document).ready(function(){
             <span class="icon text-white-50">
                 <i class="fas fa-save"></i>
             </span>
-            <span class="text text-white">저장</span>
+            <span class="text">저장</span>
         </a>
     </div>
 </div>

@@ -23,8 +23,6 @@ public class BoardImageBrowseServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		request.setCharacterEncoding("UTF-8");
 		String saveDirectory = getServletContext().getRealPath("/upload/board");
 		
 		String fileName = request.getParameter("filename");

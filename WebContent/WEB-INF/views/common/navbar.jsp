@@ -2,8 +2,8 @@
 <%@page import="member.controller.memberLogin"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% 
-	Member member1 = (Member)session.getAttribute("memberLoggedIn"); 
+<%
+	Member member = (Member)session.getAttribute("memberLoggedIn"); 
 %>
 <!DOCTYPE html>
 <style>
@@ -23,20 +23,18 @@
 	            <div class="sidebar-sticky pt-3">
 	                <ul class="nav flex-column ">
 	                    <li class="nav-item">
-                <a class="nav-link" href="<%= request.getContextPath() %>/boardList?boardType=notice">
-                   <span>공지사항</span>
-                </a>
-	                        <a class="nav-link" href="<%= request.getContextPath() %>/boardList?boardType=free">
-                   <span>자유게시판</span>
-                </a>
-	                        <a class="nav-link" href="#">
-	                           <span>null</span>
-	                        </a>
+			                <a class="nav-link" href="<%= request.getContextPath() %>/boardList?boardType=notice">
+			                   <span>공지사항</span>
+			                </a>
+				                        <a class="nav-link" href="<%= request.getContextPath() %>/boardList?boardType=free">
+			                   <span>자유게시판</span>
+			                </a>
+				                       
 	                        <a class="nav-link active" href="<%= request.getContextPath()%>/joojakList">
 	                           <span>중고거래</span>
 	                        </a>
 	                        
-	                        <% if(member1 != null && "A".equals(member1.getMemberRole())) { %>
+	                        <% if(member != null && "A".equals(member.getMemberRole())) { %>
 	                        <a class="nav-link" href="<%= request.getContextPath()%>/admin/memberlist">
 	                           <span>관리자페이지</span>
 	                        </a>

@@ -4,6 +4,12 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ include file="/WEB-INF/views/common/navbar.jsp" %>
+<style>
+	table {
+		border: collapse;
+	}
+</style>
+
     <script>
         $(function(){
             $("[name=boardEnrollFrm]").submit(boardValidate);
@@ -31,12 +37,12 @@
             }
         
         </script>
-        <section id="board-container">
+        <section id="board-container" style="text-align: center;">
         <h2>게시판 작성</h2>
         <form method="post" enctype="multipart/form-data" 
         action="<%=request.getContextPath() %>/sellBoardEnroll">
             <!-- 파일업로드가 포함된 폼 전송시 필수 속성  enctype="multipart/form-data" -->
-            <table id="tbl-board-view">
+            <table id="tbl-board-view" class="table table-borderless">
             <tr>
                 <th>제 목</th>
                 <td><input type="text" name="boardTitle" required></td>
@@ -45,11 +51,8 @@
                 <th>상품명</th>
                 <td><input type="text" name="productName" required></td>
             </tr>
-            <tr>
-                <th>판매자</th>
-                <td>
-                    <input type="text" name="seller" required/>
-                </td>
+			<tr>
+                <td><input type="hidden" name="seller" value="<%= memberLoggedIn.getNickName()%>"required></td>
             </tr>
             <tr>
                 <th>상품 이미지</th>
@@ -68,13 +71,16 @@
             </tr>
             <tr>
                 <th colspan="2">
-                    <input type="submit" value="등록하기">
+                    <input type="submit" value="등록하기" class="btn btn-success">
                 </th>
             </tr>
         </table>
         </form>
         </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+
+
 
 
 

@@ -35,12 +35,14 @@ public class BoardCommentWriteServlet extends HttpServlet {
 		int boardCommentLevel = Integer.parseInt(request.getParameter("boardCommentLevel"));
 		String boardCommentContent = request.getParameter("boardCommentContent");
 		int boardCommentRef = request.getParameter("boardCommentRef") != null ? Integer.parseInt(request.getParameter("boardCommentRef")) : 0;
+		String boardCommentWriter = request.getParameter("boardWriter");
 		
 		BoardComment boardComment = new BoardComment();
 		boardComment.setBoardCommentLevel(boardCommentLevel);
 		boardComment.setBoardCommentContent(boardCommentContent);
 		boardComment.setBoardRef(boardNo);
 		boardComment.setBoardCommentRef(boardCommentRef);
+		boardComment.setBoardCommentWriter(boardCommentWriter);
 		
 		int result = boardService.insertBoardComment(boardComment);
 		String msg = result > 0 ? "댓글 등록 성공!" : "댓글 등록 실패!";

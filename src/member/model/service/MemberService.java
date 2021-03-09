@@ -92,4 +92,24 @@ public class MemberService {
 		return member;
 	}
 
+	public Member findId(String memberName, String ssn) {
+		Connection conn = getConnection();
+		
+		Member member = memberDao.findId(conn, memberName, ssn);
+		
+		close(conn);
+		
+		return member;
+	}
+
+	public Member findPassword(String memberId, String ssn, String answer) {
+		Connection conn = getConnection();
+		
+		Member member = memberDao.findPassword(conn, memberId, ssn, answer);
+		
+		close(conn);
+		
+		return member;
+	}
+
 }

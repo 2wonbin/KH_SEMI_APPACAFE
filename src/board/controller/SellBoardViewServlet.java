@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.model.service.BoardService;
 import board.model.vo.SellBoard;
+import board.model.vo.SellBoardComment;
 
 
 
@@ -55,13 +56,13 @@ public class SellBoardViewServlet extends HttpServlet {
 			System.out.println("board@BoardViewServlet = " + board);
 			
 			//댓글목록 
-//			List<BoardComment> commentList = boardService.selectCommentList(boardNo);
+			List<SellBoardComment> commentList = boardService.selectSellCommentList(boardNo);
 			
 			
 			//3. view단처리 : jsp forwarding
 			request.setAttribute("board", board);
 
-//			request.setAttribute("commentList", commentList);
+			request.setAttribute("commentList", commentList);
 			
 			request.getRequestDispatcher("/WEB-INF/views/joojak/SellBoardView.jsp")
 				   .forward(request, response);

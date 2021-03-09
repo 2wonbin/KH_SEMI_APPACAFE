@@ -8,8 +8,9 @@
 <%
     List<MemoVo> list = (List<MemoVo>)request.getAttribute("list");
 	
-	
 	Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
+	
+	String msg = (String)request.getAttribute("msg");
 
 %>
 <!DOCTYPE html>
@@ -17,6 +18,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/bootstrap.css">
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+  />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/header.css">
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/bootstrap.js"></script>
 </head>
 <body>
 
@@ -59,8 +70,15 @@
 	
 	<script>
 	function moveDetailPage(memoNo) {
-		location.href='<%= request.getContextPath() %>/memo/memoDetail?memoNo=' + memoNo;
+		location.href='<%= request.getContextPath() %>/memo/memoContent?memoNo=' + memoNo;
 	}	
+	<%if(msg != null && msg != "") {%>
+	function showAlert() {
+		alert("<%=msg%>");		
+	}
+	
+	
+	<%}%>
 	</script>
 </body>
 </html>

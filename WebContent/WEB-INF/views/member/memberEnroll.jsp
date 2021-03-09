@@ -13,7 +13,7 @@
     	display: grid;
 	}
 	form{
-	width: 600px;
+	width: 800px;
 	} 	
 	
 	sup{
@@ -25,6 +25,7 @@
 	}
 </style>
 <script src="<%=request.getContextPath()%>/js/jquery-3.5.1.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 
 	$(function(){
@@ -76,6 +77,15 @@
 		        if(/^[가-힣]{2,}$/.test($memberName.val()) == false){
 		        	alert("이름은 한글 2글자 이상이어야 합니다.");
 		        	$memberName.select();
+		        	return false;
+		        }
+		        
+		        //ssn
+		        var $ssn = $("#ssn");
+		        
+		        if(/^[0-9]{13}$/.test($ssn.val()) == false){
+		        	alert("유효한 주민번호가 아닙니다.")
+		        	$ssn.select();
 		        	return false;
 		        }
 		        
@@ -144,20 +154,36 @@
 				.attr("target", title) 
 				.submit();
 		}
+	
+	function addressFind(){
+		new daum.Postcode({
+
+	        oncomplete: function(data) {
+
+	            $("#zoneCode").val(data.zonecode); //data.zoncode 우편번호
+	            $("#roadAddress").val(data.roadAddress); //data.roadAddress 도로명주소
+	            
+	            $("#detail").focus();
+
+	        }
+
+	    }).open();
+		
+	}
 		
 </script>
 </head>
 <body>
 	<!-- 아이디 중복검사 폼 -->
-	<form name="checkIdDuplicateFrm" class="duplicateFrm">
+	<form name="checkIdDuplicateFrm">
 		<input type="hidden" name="memberId" />
 	</form>
 	<!-- 닉네임 중복검사 폼 -->
-	<form name="checkNickNameDuplicateFrm" class="duplicateFrm">
+	<form name="checkNickNameDuplicateFrm">
 		<input type="hidden" name="nickName" />
 	</form>
 	
-	<h1 style="text-align:center; margin-top: 24px;" >회원가입</h1>
+	<h1 style="text-align:center;">회원가입</h1>
 	<form
 		name="memberEnrollFrm" 
 		action=""
@@ -238,11 +264,27 @@
 					주소
 				</th>
 				<td>	
-					<input type="text" placeholder="" name="address" id="address"><br>
+					<input type="button" id="addressBtn" value="주소찾기" onclick="addressFind();" /><br>
+					<input type="text" name="zoneCode" id="zoneCode" placeholder="우편번호" readonly/><br>
+					<input type="text" name="roadAddress" id="roadAddress" placeholder="도로명주소" readonly/><br>
+					<input type="text" name="detail" id="detail" placeholder="상세주소" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					비밀번호 찾기 질문<sup>*</sup>
+				</th>
+			</tr>
+			<tr>
+				<th>
+					내 배우자 이름은?
+				</th>
+				<td>	
+				<input type="text" name="passwordQuestion" id="passwordQuestion" required><br>
 				</td>
 			</tr>
 		</table>
-		
+
 		<div id="btn-enroll-menu" style="text-align:center;">
 			<input type="submit" class="btn btn-primary" value="가입" >
 			<input type="reset" class="btn btn-danger" value="취소">

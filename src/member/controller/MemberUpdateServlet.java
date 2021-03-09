@@ -31,11 +31,15 @@ public class MemberUpdateServlet extends HttpServlet {
 		String nickName = request.getParameter("nickName");
 		String email = request.getParameter("email");
 		String phone = request.getParameter("phone");
-		String address = request.getParameter("address");
+		String zoneCode = request.getParameter("zoneCode");
+		String roadAddress = request.getParameter("roadAddress");
+		String detail = request.getParameter("detail");
 		
-		Member member = new Member(0, memberId, null, null, nickName, null, email, phone, address, null, null, null, null, null);
+		Member member = new Member(0, memberId, null, null, nickName, null, email, phone, zoneCode, roadAddress, detail, null, null, null, null, null, null);
 		
 		int result = memberService.updateMember(member);  
+		
+		System.out.println("member@memberUpdate" + member.toString());
 		
 		String msg = null;
 		String loc = request.getContextPath() + "/member/memberView?memberId=" + member.getMemberId();

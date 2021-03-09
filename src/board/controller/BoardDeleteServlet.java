@@ -22,8 +22,6 @@ public class BoardDeleteServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		
 		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 		String boardType = request.getParameter("boardType");
 		

@@ -30,7 +30,7 @@ public class CheckNickNameDuplicateServlet extends HttpServlet {
 		Member member = memberService.checkNickName(nickName);
 		boolean available = (member == null);
 		
-		System.out.println(nickName);
+//		System.out.println(nickName);
 		
 		request.setAttribute("available", available);
 		request.getRequestDispatcher("/WEB-INF/views/member/checkNickNameDuplicate.jsp")

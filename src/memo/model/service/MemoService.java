@@ -1,11 +1,14 @@
 package memo.model.service;
 
 import static common.JDBCTemplate.close;
+import static common.JDBCTemplate.commit;
 import static common.JDBCTemplate.getConnection;
+import static common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.List;
 
+import member.model.vo.Member;
 import memo.model.dao.MemoDao;
 import memo.model.vo.MemoVo;
 
@@ -26,4 +29,39 @@ public class MemoService {
 		close(conn);
 		return totalMemoCount;
 	}
+	
+
+	public MemoVo selectMemo(int memoNo) {
+		Connection conn = getConnection();
+		MemoVo memo = memoDao.selectMemo(conn, memoNo);
+		close(conn);
+		return memo;
+	}
+	
+	public String selectMemeberNickname(int memberNo) {
+		Connection conn = getConnection();
+		String nickname = memoDao.selectMemeberNickname(conn, memberNo);
+		close(conn);
+		return nickname;
+	}
+
+	public int insertMemo(MemoVo memo) {
+		
+			Connection conn = getConnection();
+			
+			int result = memoDao.insertMemo(conn, memo);
+			
+			//트랜잭션 처리
+			if(result > 0)
+				commit(conn);
+			else 
+				rollback(conn);
+			
+			//자원반납
+			close(conn);
+			
+			return result;
+	}
+	
+	
 }

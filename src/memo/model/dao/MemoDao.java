@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -98,5 +99,98 @@ public class MemoDao {
 		}
 		
 		return totalContents;
+	}
+	
+	public MemoVo selectMemo(Connection conn, int memoNo) {
+		MemoVo memo = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectMemo");
+		
+		try{
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setInt(1, memoNo);
+			
+			rset = pstmt.executeQuery();
+			
+			rset.next();
+			
+			memo = new MemoVo();
+			memo.setSendDate(rset.getDate("send_date"));
+			memo.setSender(rset.getInt("sender"));
+			memo.setSenderNickname(rset.getString("sender_nickname"));
+			memo.setContent(rset.getString("memo_content"));
+				
+		}catch(Exception e){
+			throw new RuntimeException("게시물 조회 오류", e);
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return memo;
+	}
+	
+	
+	public String selectMemeberNickname(Connection conn, int memeberNo) {
+		String nickname = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectMemeberNickname");
+		
+		try{
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setInt(1, memeberNo);
+			
+			rset = pstmt.executeQuery();
+			
+			rset.next();
+			
+			nickname = rset.getString("nickname");
+
+		}catch(Exception e){
+			throw new RuntimeException("게시물 조회 오류", e);
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return nickname;
+	}
+
+
+	public int insertMemo(Connection conn, MemoVo memo) {
+		
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("insertMemo"); 
+		
+		try {
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
+			pstmt.setInt(1, memo.getSender());
+			pstmt.setInt(2, memo.getReceiver());
+			pstmt.setString(3, memo.getContent());
+
+
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 }

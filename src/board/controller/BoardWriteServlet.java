@@ -21,8 +21,6 @@ public class BoardWriteServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		
 		String boardType = request.getParameter("boardType");
 		
 		request.setAttribute("boardType", boardType);
@@ -36,11 +34,13 @@ public class BoardWriteServlet extends HttpServlet {
 		String boardTitle = request.getParameter("boardTitle");
 		String boardContent = request.getParameter("boardContent");
 		String boardType = request.getParameter("boardType");
+		String boardWriter = request.getParameter("boardWriter");
 		
 		BoardVo board = new BoardVo();
 		board.setBoardType(boardType);
 		board.setBoardTitle(boardTitle);
 		board.setBoardContent(boardContent.replaceAll("(\r\n|\r|\n|\n\r)", " "));
+		board.setBoardWriter(boardWriter);
 		
 		int result = boardService.insertBoard(board);
 		System.out.println(board.getBoardNo());

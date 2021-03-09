@@ -37,9 +37,9 @@ span#duplicated{color:red; font-weight:bold;}
 	function confirmUpdateNickName(){
 		//opener : 팝업을 연 부모창의 window객체
 		var $frm = $(opener.document.memberUpdateFrm);
-		$frm.find("#nickName_").val("<%= nickName %>");
+		$frm.find("#nickName").val("<%= nickName %>");
 		$frm.find("#nickNameValid").val(1);
-		
+		console.log(confirmUpdateNickName());
 		close();
 	}
 	
@@ -62,7 +62,7 @@ span#duplicated{color:red; font-weight:bold;}
 				action="<%= request.getContextPath() %>/member/checkNickNameDuplicate"
 				method="POST"
 				name="checkIdDuplicateFrm">
-				<input type="text" name="nickName" id="nickName_" placeholder="닉네임"/>
+				<input type="text" name="nickName" id="nickName" placeholder="닉네임"/>
 				<input type="button" value="중복검사" onclick="checkNickNameDuplicate();" />
 			</form>
 		<% } %>

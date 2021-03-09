@@ -12,20 +12,29 @@ public class Member {
 	private String ssn;
 	private String email;
 	private String phone;
-	private String address;
+	private String zoneCode;
+	private String roadAddress;
+	private String detail;
 	private String grade;
 	private String memberRole;
 	private Date enrollDate;
 	private String delFlag;
 	private Date delDate;
+	private String passwordQuestion;
 	
 	public Member() {
 		super();
 	}
 
+
+
+
+
+
+
 	public Member(int memberNo, String memberId, String password, String memberName, String nickName, String ssn,
-			String email, String phone, String address, String grade, String memberRole, Date enrollDate,
-			String delFlag, Date delDate) {
+			String email, String phone, String zoneCode, String roadAddress, String detail, String grade,
+			String memberRole, Date enrollDate, String delFlag, Date delDate, String passwordQuestion) {
 		super();
 		this.memberNo = memberNo;
 		this.memberId = memberId;
@@ -35,13 +44,22 @@ public class Member {
 		this.ssn = ssn;
 		this.email = email;
 		this.phone = phone;
-		this.address = address;
+		this.zoneCode = zoneCode;
+		this.roadAddress = roadAddress;
+		this.detail = detail;
 		this.grade = grade;
 		this.memberRole = memberRole;
 		this.enrollDate = enrollDate;
 		this.delFlag = delFlag;
 		this.delDate = delDate;
+		this.passwordQuestion = passwordQuestion;
 	}
+
+
+
+
+
+
 
 	public int getMemberNo() {
 		return memberNo;
@@ -107,14 +125,30 @@ public class Member {
 		this.phone = phone;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getZoneCode() {
+		return zoneCode;
+	}
+	
+	public void setZoneCode(String zoneCode) {
+		this.zoneCode = zoneCode;
+	}
+	
+	public String getRoadAddress() {
+		return roadAddress;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setRoadAddress(String address) {
+		this.roadAddress = address;
 	}
 
+	public String getDetail() {
+		return detail;
+	}
+	
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+	
 	public String getGrade() {
 		return grade;
 	}
@@ -155,13 +189,28 @@ public class Member {
 		this.delDate = delDate;
 	}
 
+	public String getPasswordQuestion() {
+		return passwordQuestion;
+	}
+
+	public void setPasswordQuestion(String passwordQuestion) {
+		this.passwordQuestion = passwordQuestion;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", password=" + password + ", memberName="
 				+ memberName + ", nickName=" + nickName + ", ssn=" + ssn + ", email=" + email + ", phone=" + phone
-				+ ", address=" + address + ", grade=" + grade + ", memberRole=" + memberRole + ", enrollDate="
-				+ enrollDate + ", delFlag=" + delFlag + ", delDate=" + delDate + "]";
+				+ ", zoneCode=" + zoneCode + ", roadAddress=" + roadAddress + ", detail=" + detail + ", grade=" + grade
+				+ ", memberRole=" + memberRole + ", enrollDate=" + enrollDate + ", delFlag=" + delFlag + ", delDate="
+				+ delDate + ", passwordQuestion=" + passwordQuestion + "]";
 	}
+
+
+
+	
+	
+
 
 	
 	

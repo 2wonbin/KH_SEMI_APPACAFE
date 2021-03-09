@@ -26,7 +26,7 @@ public class MemberEnrollServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request
+			request
 			.getRequestDispatcher("/WEB-INF/views/member/memberEnroll.jsp")
 			.forward(request, response);
 	}
@@ -45,9 +45,12 @@ public class MemberEnrollServlet extends HttpServlet {
 		String ssn = request.getParameter("ssn");
 		String email = request.getParameter("email");
 		String phone = request.getParameter("phone");
-		String address = request.getParameter("address");
+		String zoneCode = request.getParameter("zoneCode"); //우편번호
+		String roadAddress = request.getParameter("roadAddress"); //도로명주소
+		String detail = request.getParameter("detail"); //상세주소
+		String passwordQuestion = request.getParameter("passwordQuestion"); //비밀번호 찾기 질문 답
 		
-		Member member = new Member(0, memberId, password, memberName, nickName, ssn, email, phone, address, null, null, null, null, null);
+		Member member = new Member(0, memberId, password, memberName, nickName, ssn, email, phone, zoneCode, roadAddress, detail, null, null, null, null, null, passwordQuestion);
 		
 		int result = memberService.addMember(member);
 		String msg = "";

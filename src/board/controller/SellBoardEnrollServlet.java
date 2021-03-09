@@ -35,9 +35,8 @@ public class SellBoardEnrollServlet extends HttpServlet {
 		 String realFolder = "";
 		 int maxSize = 20*1024*1024;
 		 String encType = "utf-8";
-		 String savefile = "img";
-		 ServletContext scontext = getServletContext();
-		 realFolder = scontext.getRealPath(savefile);
+		 
+		 realFolder = getServletContext().getRealPath("img");
 		 
 		FileRenamePolicy policy = new MvcFileRenamePolicy();
 		
