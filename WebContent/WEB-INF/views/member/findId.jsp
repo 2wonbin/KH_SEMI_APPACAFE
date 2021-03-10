@@ -24,14 +24,14 @@
 	
 	}
 	#title {
-	text-al
+	
 	font-style: bold;
 	font-size : 2.5em;
 	}
 </style>
 </head>
 <body>
-<h1 style="text-align:center;">아이디 찾기</h1>
+<h1 style="text-align:center; margin:24px 0;"">아이디 찾기</h1>
 <br>
 
 	<form 

@@ -24,7 +24,7 @@ public class AdminServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub   
-		System.out.println("AdminServlet doGet : " + getServletContext().getRequestDispatcher("/views/admin/memberList.jsp"));
+		//System.out.println("AdminServlet doGet : " + getServletContext().getRequestDispatcher("/views/admin/memberList.jsp"));
 		request.getRequestDispatcher("/WEB-INF/views/admin/memberList.jsp")
 		.forward(request, response);//forward()[전달하기]는 클라이언트가 요청하면서 전송한 데이터를 그대로 유지한다
 	}///WEB-INF/views/member/login.jsp

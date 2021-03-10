@@ -26,6 +26,9 @@ public class memoContentServlet extends HttpServlet {
 			// get 으로 메모 번호 받아다가
 			int memoNo = Integer.parseInt(request.getParameter("memoNo"));
 			
+			// 그 메모 번호의 쪽지를 읽음 상태로 바꾼다.
+			int result = memoService.readMemo(memoNo);
+			
 			// 그 메모 번호에 맞는걸 가져온다
 			MemoVo memo = memoService.selectMemo(memoNo);
 			

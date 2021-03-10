@@ -8,38 +8,27 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 public class adminVo implements Serializable, HttpSessionBindingListener {
 	private String member_no;   //회원 번호
-	private String member_Id;	//회원 아이디 필수
-	private String member_Name;	//회원 이름 필수
-	private String nickname;	//회원 닉네임
-	private String member_role;	//회원 유형
-	private String member_grade;//회원 등급
-	private String ssn;			//회원 주민번호(생년월일 substring)
-	private String email;		//회원 이메일
-	private String phone;		//회원 전화번호
-	private Date   enroll_Date;	//회원 가입일
-	private String password;	//회원 비밀번호 필수
-	private String del_flag;	//회원 삭제 여부 (Y/N)
-	private Date del_date;	//회원 삭제일
+	private String memberId;
+	private String password;
+	private String memberName;
+	private String nickName;
+	private String ssn;
+	private String email;
+	private String phone;
+	private String zoneCode;
+	private String roadAddress;
+	private String detail;
+	private String grade;
+	private String memberRole;
+	private Date enrollDate;
+	private String delFlag;
+	private Date delDate;
+	private String passwordQuestion;
 	
 	private String viewCombo;	//화면 콤보박스 value
 	private String viewContent;	//화면 검색어    value
 	private String viewAlign;	//화면 정렬 기준 value
-	
-	public void setDelFlag(String del_flag) {
-		this.del_flag = del_flag;
-	}
-	
-	public String getDelFlag() {
-		return del_flag;
-	}
-	
-	public void setDelDate(Date del_date) {
-		this.del_date = del_date;
-	}
-	
-	public Date getDelDate() {
-		return del_date;
-	}
+	private final static String last_6_char_pattern = "(.{6}$)";
 	
 	public void setViewCombo(String viewCombo) {
 		this.viewCombo = viewCombo;
@@ -71,38 +60,100 @@ public class adminVo implements Serializable, HttpSessionBindingListener {
 	public void setMember_no(String member_no) {
 		this.member_no = member_no;
 	}
-	public String getMember_Id() {
-		return member_Id;
+	public String getMemberId() {
+		return memberId;
 	}
-	public void setMember_Id(String member_Id) {
-		this.member_Id = member_Id;
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
-	public String getMember_Name() {
-		return member_Name;
+
+	public String getMemberName() {
+		return memberName;
 	}
-	public void setMember_Name(String member_Name) {
-		this.member_Name = member_Name;
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
-	public String getNickname() {
-		return nickname;
+
+	public String getNickName() {
+		return nickName;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
-	public String getMember_role() {
-		return member_role;
+
+	public String getZoneCode() {
+		return zoneCode;
 	}
-	public void setMember_role(String member_role) {
-		this.member_role = member_role;
+
+	public void setZoneCode(String zoneCode) {
+		this.zoneCode = zoneCode;
 	}
-	public String getMember_grade() {
-		return member_grade;
+
+	public String getRoadAddress() {
+		return roadAddress;
 	}
-	public void setMember_grade(String member_grade) {
-		this.member_grade = member_grade;
+
+	public void setRoadAddress(String roadAddress) {
+		this.roadAddress = roadAddress;
 	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getMemberRole() {
+		return memberRole;
+	}
+
+	public void setMemberRole(String memberRole) {
+		this.memberRole = memberRole;
+	}
+
+	public Date getEnrollDate() {
+		return enrollDate;
+	}
+
+	public void setEnrollDate(Date enrollDate) {
+		this.enrollDate = enrollDate;
+	}
+
+	public String getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(String delFlag) {
+		this.delFlag = delFlag;
+	}
+
+	public Date getDelDate() {
+		return delDate;
+	}
+
+	public void setDelDate(Date delDate) {
+		this.delDate = delDate;
+	}
+
+	public String getPasswordQuestion() {
+		return passwordQuestion;
+	}
+
+	public void setPasswordQuestion(String passwordQuestion) {
+		this.passwordQuestion = passwordQuestion;
+	}
+
 	public String getSsn() {
-		return ssn;
+		if(ssn == null || "".equals(ssn) || ssn.length() < 6) 
+			return ssn; 
+		
+		return ssn.replaceAll(last_6_char_pattern, "******");
+
 	}
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
@@ -118,12 +169,6 @@ public class adminVo implements Serializable, HttpSessionBindingListener {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-	public Date getEnroll_Date() {
-		return enroll_Date;
-	}
-	public void setEnroll_Date(Date enroll_Date) {
-		this.enroll_Date = enroll_Date;
 	}
 	public String getPassword() {
 		return password;

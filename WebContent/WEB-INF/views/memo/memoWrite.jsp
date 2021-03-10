@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>쪽지 보내기 | 아빠카페 </title>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/bootstrap.css">
 <link
     rel="stylesheet"
@@ -45,7 +45,7 @@
 	 </tr>
 	 <tr style="display:none;">
 	 	<td>받는 사람 번호</td>
-	 	<td><input type="text" value="<%=receiver %>" name="receiver"></td>
+	 	<td><input type="text" value="<%= receiver %>" name="receiver"></td>
 	 </tr>
 	 <tr style="display:none;">
 	 	<td>보내는 사람 번호</td>

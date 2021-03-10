@@ -28,7 +28,7 @@ public class updateUserRole extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("do GET");
+		//System.out.println("do GET");
 		//		//1.parameterHandling
 //		String auth = request.getParameter("member_role");
 //		adminVo adminVo = new adminVo();
@@ -44,16 +44,16 @@ public class updateUserRole extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-		String auth = request.getParameter("member_role");
+		String auth = request.getParameter("memberRole1");
 		System.out.println("auth : " + auth);
-		String member_no = request.getParameter("member_no");
-		System.out.println("no : " + member_no);
-		String del_flag = request.getParameter("del_flag");
+		String memberId = request.getParameter("memberId1");
+		System.out.println("no : " + memberId);
+		String del_flag = request.getParameter("delFlag1");
 		System.out.println("del_flag : " + del_flag);
 		
 		adminVo adminVo = new adminVo();
-		adminVo.setMember_role(auth);
-		adminVo.setMember_no(member_no);
+		adminVo.setMemberRole(auth);
+		adminVo.setMemberId(memberId);
 		adminVo.setDelFlag(del_flag);
 		
 		//2.businessLogic
@@ -98,6 +98,42 @@ public class updateUserRole extends HttpServlet {
 //		//3.사용자 피드백(msg) 및 redirect처리
 //		//DML이후 반드시 요청url을 변경할 것
 //		response.sendRedirect(location);
+		
+		String auth = request.getParameter("memberRole1");
+		System.out.println("auth : " + auth);
+		String memberId = request.getParameter("memberId1");
+		System.out.println("no : " + memberId);
+		String del_flag = request.getParameter("delFlag1");
+		System.out.println("del_flag : " + del_flag);
+		
+		adminVo adminVo = new adminVo();
+		adminVo.setMemberRole(auth);
+		adminVo.setMemberId(memberId);
+		adminVo.setDelFlag(del_flag);
+		
+		//2.businessLogic
+		int result = adminService.updateUserRole(adminVo);
+		System.out.println("result : " + result);
+		//String location = request.getContextPath() + "/admin/memberlist.jsp";
+							
+				
+		//3.사용자 피드백(msg) 및 redirect처리
+		//DML이후 반드시 요청url을 변경할 것
+		//response.sendRedirect(location);
+		//request.getRequestDispatcher("/WEB-INF/views/admin/memberlist.jsp").forward(request, response);
+		
+		
+		//다시 조회
+		adminVo searchVal = new adminVo();
+		searchVal.setViewCombo("1");
+		searchVal.setViewContent("");
+		searchVal.setViewAlign("");
+		
+		List<adminVo> list = adminService.selectList(searchVal);
+		System.out.println(list);
+		request.setAttribute("list", list);
+		request.getRequestDispatcher("/WEB-INF/views/admin/memberList.jsp").forward(request, response);
+	
 	}
 
 }

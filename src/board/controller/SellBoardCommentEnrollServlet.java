@@ -21,6 +21,8 @@ public class SellBoardCommentEnrollServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		//1.파라미터 처리
 		int boardRef = Integer.parseInt(request.getParameter("boardRef"));
 		int boardCommentLevel = Integer.parseInt(request.getParameter("boardCommentLevel"));

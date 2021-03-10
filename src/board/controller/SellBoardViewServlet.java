@@ -28,7 +28,7 @@ public class SellBoardViewServlet extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+			request.setCharacterEncoding("UTF-8");
 			//1. 사용자 입력값 처리
 			int boardNo = 0;
 			

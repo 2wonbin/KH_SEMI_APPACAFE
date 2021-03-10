@@ -34,7 +34,9 @@ public class MemberLoginServlet extends HttpServlet {
 		
 		Member member = memberService.selectMember(memberId);
 		
-		if(member != null && password.equals(member.getPassword())) {
+		String delFlag = member.getDelFlag();
+		
+		if(member != null && password.equals(member.getPassword()) && delFlag.equals("N")) {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("memberLoggedIn", member);
 			

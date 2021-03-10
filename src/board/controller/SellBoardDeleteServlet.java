@@ -22,6 +22,7 @@ public class SellBoardDeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		//1.사용자 입력값
 		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 		String rName = request.getParameter("rName");

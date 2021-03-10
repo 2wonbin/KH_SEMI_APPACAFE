@@ -197,4 +197,15 @@ public class BoardService {
 		return result;
 	}
 
+	public int deleteSellBoardComment(int boardCommentNo) {
+		Connection conn = getConnection();
+		int result = boardDao.deleteSellBoardComment(conn, boardCommentNo);
+ 		if(result>0)
+			commit(conn);
+		else 
+			rollback(conn);
+		close(conn);
+		return result;
+	}
+
 }

@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>쪽지 내용 | 아빠카페 </title>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/bootstrap.css">
 <link
     rel="stylesheet"
@@ -34,9 +34,8 @@
 
  -->
  
- <h1>하이</h1>
  
- 
+ <br><br>
  <table class="table table-hover">
 	 <tr>
 	 	<td>보낸이</td>
@@ -47,8 +46,8 @@
 	 	<td><%=memo.getSendDate() %></td>
 	 </tr>
 	 <tr style="height: 200px;">
-	 	<td>내용</td>
-	 	<td><%=memo.getContent() %></td>
+	 	<td style="transform: translateY(40%);">내용</td>
+	 	<td style="transform: translateY(40%);"><%=memo.getContent() %></td>
 	 </tr>
  </table>
  

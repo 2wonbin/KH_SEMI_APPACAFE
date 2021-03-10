@@ -28,11 +28,12 @@
 </style>
 </head>
 <body>
-<h1 style="text-align:center;">비밀번호찾기</h1>
+<h1 style="text-align:center; margin:24px 0;">비밀번호찾기</h1>
 	<form 
 	name="findPasswordFrm"
 	action=""
-	method="POST">
+	method="POST"
+	>
 		<table class="table table-light">
 			<tr>
 				<th>

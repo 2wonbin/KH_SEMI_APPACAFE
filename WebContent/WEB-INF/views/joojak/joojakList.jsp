@@ -14,6 +14,14 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	<% if(memberLoggedIn == null) { %>
+	alert('로그인을 먼저 해주세요.');
+	location.href="<%= request.getContextPath() %>";
+	<% } else if("Y".equals(memberLoggedIn.getDelFlag())) { %>
+	alert('이용이 제한된 회원입니다.');
+	location.href="<%= request.getContextPath()%>/member/logout";
+	<%}%>
+	
 	$('.listTr').on('click', function(){
 	    location.href = '<%= request.getContextPath() %>/sellBoardView'+'?boardNo='+ $(this).data("href");
 	});

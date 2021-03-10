@@ -9,28 +9,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.model.service.BoardService;
 
-@WebServlet("/boardDelete")
-public class BoardDeleteServlet extends HttpServlet {
+/**
+ * Servlet implementation class SellBoardCommentDeleteServlet
+ */
+@WebServlet("/board/SellBoardCommentDelete")
+public class SellBoardCommentDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BoardService boardService = new BoardService();
-       
-    public BoardDeleteServlet() {
+	
+    public SellBoardCommentDeleteServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	
 		request.setCharacterEncoding("UTF-8");
+		int boardCommentNo = Integer.parseInt(request.getParameter("boardCommentNo"));
 		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-		String boardType = request.getParameter("boardType");
 		
-		int result = boardService.deleteBoard(boardNo,boardType);
+		int result = boardService.deleteSellBoardComment(boardCommentNo);
+		String msg = result > 0 ? "댓글 삭제 성공!" : "댓글 삭제 실패!";
 		
-		String msg = result > 0 ? "게시물 삭제 성공!" : "게시물 삭제 실패!";
 		request.getSession().setAttribute("msg", msg);
-		response.sendRedirect(request.getContextPath() + "/boardList?boardType=" + boardType);
+		response.sendRedirect(request.getContextPath() + "/sellBoardView?boardNo=" + boardNo);
+	
 	}
-
 }

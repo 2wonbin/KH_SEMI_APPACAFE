@@ -30,6 +30,19 @@ public class MemoService {
 		return totalMemoCount;
 	}
 	
+	
+	public int readMemo(int memoNo) {
+		Connection conn = getConnection();
+		int result = memoDao.readMemo(conn, memoNo);
+		
+		if(result > 0)
+			commit(conn);
+		else 
+			rollback(conn);
+		close(conn);
+		
+		return result;
+	}
 
 	public MemoVo selectMemo(int memoNo) {
 		Connection conn = getConnection();
@@ -43,6 +56,20 @@ public class MemoService {
 		String nickname = memoDao.selectMemeberNickname(conn, memberNo);
 		close(conn);
 		return nickname;
+	}
+
+	public String selectMemeberNickname(String memberId) {
+		Connection conn = getConnection();
+		String nickname = memoDao.selectMemeberNickname(conn, memberId);
+		close(conn);
+		return nickname;
+	}
+	
+	public int selectMemeberNoFromMemberId(String memberId) {
+		Connection conn = getConnection();
+		int memberNo = memoDao.selectMemeberNoFromMemberId(conn, memberId);
+		close(conn);
+		return memberNo;
 	}
 
 	public int insertMemo(MemoVo memo) {

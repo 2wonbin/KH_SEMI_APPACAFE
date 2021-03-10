@@ -22,11 +22,19 @@ public class memoWriteServlet extends HttpServlet {
 	private MemoService memoService = new MemoService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
-		int receiver = Integer.parseInt(request.getParameter("receiver"));
+		request.setCharacterEncoding("utf-8");
 		
-		String nickname = memoService.selectMemeberNickname(receiver);
+		String nickname = null;
+		int receiver;
+		try {
+			receiver = Integer.parseInt(request.getParameter("receiver"));
+			nickname = memoService.selectMemeberNickname(receiver);
+		} catch(Exception e) {
+			String receiverID = request.getParameter("receiverid");
+			nickname = memoService.selectMemeberNickname(receiverID);
+			receiver = memoService.selectMemeberNoFromMemberId(receiverID);
+		}
+		
 		
 		request.setAttribute("receiver", receiver);
 		request.setAttribute("receiver_nickname", nickname);
@@ -36,6 +44,7 @@ public class memoWriteServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
 		int receiver = Integer.parseInt(request.getParameter("receiver"));
 		int sender = Integer.parseInt(request.getParameter("sender"));
 		String content = request.getParameter("content");

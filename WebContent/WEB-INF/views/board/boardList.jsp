@@ -19,6 +19,9 @@ $(document).ready(function(){
 	<% if(memberLoggedIn == null) { %>
 		alert('로그인을 먼저 해주세요.');
 		location.href="<%= request.getContextPath() %>";
+	<% } else if("Y".equals(memberLoggedIn.getDelFlag())) { %>
+	alert('이용이 제한된 회원입니다.');
+	location.href="<%= request.getContextPath()%>/member/logout";
 	<%}%>
 	
 	var boardType = '<%=boardType%>';
@@ -32,7 +35,11 @@ $(document).ready(function(){
 	$('#writeBtn').on('click', function(){
 		location.href = "boardWrite?boardType=" + boardType;
 	});
+	
 });
+
+
+
 </script>
 <%if(boardType.equals("free")) {%>
 <h3 class="my-4">자유게시판</h3>
@@ -57,7 +64,7 @@ $(document).ready(function(){
 	            <tr class="listTr" role="button">
 	            	<td class="boardNo" style="display: none;"><%=board.getBoardNo() %></td>
 	            	<td><%=board.getBoardTitle() %></td>
-	            	<td><%=board.getBoardWriter() %></td>
+	            	<td><span onclick="showMemoPopup(this, '<%=board.getBoardWriter() %>')"><%=board.getBoardWriter() %></span></td>
 	            	<td><%=board.getBoardDate() %></td>
 	            	<td><%=board.getBoardReadCount() %></td>
 	            </tr>

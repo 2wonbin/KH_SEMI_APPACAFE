@@ -58,7 +58,7 @@ public class MemoDao {
 				b.setSenderNickname(rset.getString("sender_nickname"));
 				b.setReceiverNickname(rset.getString("receiver_nickname"));
 				b.setContent(rset.getString("memo_content"));
-				b.setIsRead(rset.getString("isread") == "1" ? true : false);
+				b.setIsRead(rset.getBoolean("isread"));
 				
 				
 
@@ -101,6 +101,33 @@ public class MemoDao {
 		return totalContents;
 	}
 	
+	public int readMemo(Connection conn, int memoNo) {
+		int result;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("readMemo");
+		
+		try{
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setInt(1, memoNo);
+			
+			result = pstmt.executeUpdate();
+				
+		}catch(Exception e){
+			throw new RuntimeException("게시물 조회 오류", e);
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+	
+	
 	public MemoVo selectMemo(Connection conn, int memoNo) {
 		MemoVo memo = null;
 		PreparedStatement pstmt = null;
@@ -141,7 +168,7 @@ public class MemoDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = prop.getProperty("selectMemeberNickname");
+		String query = prop.getProperty("selectMemeberNicknameFromMemberNo");
 		
 		try{
 
@@ -165,6 +192,66 @@ public class MemoDao {
 		
 		return nickname;
 	}
+	public String selectMemeberNickname(Connection conn, String memeberId) {
+		String nickname = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectMemeberNicknameFromMemberId");
+		
+		try{
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, memeberId);
+			
+			rset = pstmt.executeQuery();
+			
+			rset.next();
+			
+			nickname = rset.getString("nickname");
+
+		}catch(Exception e){
+			throw new RuntimeException("게시물 조회 오류", e);
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return nickname;
+	}
+
+	public int selectMemeberNoFromMemberId(Connection conn, String memeberId) {
+		int memberNo;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectMemeberNoFromMemberId");
+		
+		try{
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, memeberId);
+			
+			rset = pstmt.executeQuery();
+			
+			rset.next();
+			
+			memberNo = rset.getInt("member_no");
+
+		}catch(Exception e){
+			throw new RuntimeException("게시물 조회 오류", e);
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return memberNo;
+	}
+	
 
 
 	public int insertMemo(Connection conn, MemoVo memo) {

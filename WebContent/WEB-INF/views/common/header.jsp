@@ -100,6 +100,7 @@
 								value="✉" 
 								onclick="popupMemoList()"/>
 							 
+							 
 							
 			</div>
 			
@@ -107,9 +108,29 @@
 			
 			
 			<script>
-			function popupMemoList() {
-				window.open('<%= request.getContextPath() %>/memo/memoList?receiver=<%=memberLoggedIn.getMemberNo() %> ', 'memoPopup', 'width=800px, height=480px'); 
-			}			
+				function popupMemoList() {
+					window.open('<%= request.getContextPath() %>/memo/memoList?receiver=<%=memberLoggedIn.getMemberNo() %> ', 'memoPopup', 'width=800px, height=480px'); 
+				}
+				function popupMemoWriter(memberId) {
+					window.open('<%= request.getContextPath() %>/memo/memoWrite?receiverid=' + memberId, 'memoPopup', 'width=800px, height=480px');					
+				}
+
+				function showMemoPopup(target, memberId) {
+					event.stopPropagation();
+					document.querySelectorAll(".memo_popup").forEach((a,b) => {
+						a.remove();
+					});
+					
+					var popup = document.createElement('div');
+					popup.className = "memo_popup";
+					popup.innerHTML = "✉ 쪽지 보내기";
+					
+					$(popup).on('click', function(){
+						popupMemoWriter(memberId);
+					});
+					
+					target.append(popup);
+				}
 			</script>
 		<% } %>
 	</nav>

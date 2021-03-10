@@ -58,18 +58,20 @@ public class AdminDao {
 			while(rset.next()) {
 				adminVo member = new adminVo();
 				member.setMember_no(rset.getNString("member_no")); //회원번호
-				member.setMember_Id(rset.getString("member_id")); //회원 아이디
-				member.setNickname(rset.getString("nickname")); //회원 닉네임
-				member.setMember_role(rset.getString("member_role")); //회원 유형
-				member.setMember_grade(rset.getString("member_grade")); //회원 등급
+				member.setMemberId(rset.getString("member_id")); //회원 아이디
+				member.setMemberName(rset.getString("member_name")); // 회원 성명
+				member.setNickName(rset.getString("nickname")); //회원 닉네임
 				member.setSsn(rset.getString("ssn")); //생년월일  (주민번호)
-				member.setPassword(rset.getString("password")); //패스워드??
-				member.setMember_Name(rset.getString("member_name")); // 회원 성명
 				member.setPhone(rset.getString("phone")); //회원 전화번호
+				member.setZoneCode(rset.getString("zone_code"));
+				member.setRoadAddress(rset.getString("road_address"));
+				member.setDetail(rset.getString("detail"));
+				member.setMemberRole(rset.getString("member_role")); //회원 유형
 				member.setEmail(rset.getString("email")); //회원 이메일
-				member.setEnroll_Date(rset.getDate("enroll_date")); // 회원 가입일
+				member.setEnrollDate(rset.getDate("enroll_date")); // 회원 가입일
 				member.setDelFlag(rset.getString("del_flag"));
 				member.setDelDate(rset.getDate("del_date"));
+				member.setPasswordQuestion(rset.getString("password_question"));
 				list.add(member);
 			}
 			
@@ -90,12 +92,12 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		String query = prop.getProperty("updateUserRole");
 		try {
-			System.out.println("DAO - role : " + adminVo.getMember_role() + " no : " + adminVo.getMember_no() + " del_flag : " + adminVo.getDelFlag());
+			System.out.println("DAO - role : " + adminVo.getMemberRole() + " no : " + adminVo.getMemberId() + " del_flag : " + adminVo.getDelFlag());
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, adminVo.getMember_role());
+			pstmt.setString(1, adminVo.getMemberRole());
 			pstmt.setString(2, adminVo.getDelFlag());
 			pstmt.setString(3, adminVo.getDelFlag());
-			pstmt.setInt(4, Integer.parseInt(adminVo.getMember_no()));
+			pstmt.setString(4, adminVo.getMemberId());
 			System.out.println("DAO_1");
 			result = pstmt.executeUpdate();
 			System.out.println("DAO_2");

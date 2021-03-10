@@ -17,7 +17,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>쪽지 목록 | 아빠카페 ㄴ</title>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/bootstrap.css">
 <link
     rel="stylesheet"
@@ -41,8 +41,21 @@
 페이징 넣어야되는데
 개빡세니까 나중에
   -->
-<h1>하이</h1>
 
+
+<style>
+
+
+.listTr {
+    color: rgb(190,190,190);	
+}
+
+.listTr.noread {
+	font-weight: bolder;
+    color: black;	
+}
+
+</style>
 
     <div class="col-md-12 py-4">
 	    <!-- 테이블 -->
@@ -52,16 +65,17 @@
 	                <th>글번호</th>                
 	                <th>보낸이</th>                
 	                <th>내용</th>                
-	                <th>작성일</th>                
+	                <th>작성일</th>
 	            </tr>
 	        </thead>
 	        <tbody>
 	            <%for(MemoVo memo:list){ %>
-	            <tr class="listTr" role="button" onclick="moveDetailPage(<%=memo.getMemoNo() %>)">
+	            <tr class="listTr<% if (!memo.getIsRead()) { %> noread <% } %>" role="button" onclick="moveDetailPage(<%=memo.getMemoNo() %>)">
 	            	<td class="MemoNo"><%=memo.getMemoNo() %></td>
 	            	<td><%=memo.getSenderNickname() %></td>
 	            	<td><%=memo.getContent() %></td>
 	            	<td><%=memo.getSendDate() %></td>
+	            	<td></td>
 	            </tr>
 	            <%} %>
 	        </tbody>
