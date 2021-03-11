@@ -59,6 +59,11 @@
 	    left: 50%;
 	    transform: translateX(-50%);C
     }
+    #btn-insert{
+    position: absolute;
+    top: 25%;
+    margin-left: 1%;
+    }
     
     /*댓글테이블*/
 table#tbl-comment{width:580px; margin:0 auto; border-collapse:collapse; } 

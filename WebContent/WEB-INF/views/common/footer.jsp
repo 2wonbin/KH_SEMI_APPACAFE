@@ -13,7 +13,8 @@
 	<footer class="footer mt-auto py-3 bg-secondary">
 	    <div class="container">
 	        <div class="text-center">
-	            AppCafe. 2021.
+	            AppaCafe. 2021.<br>
+	            이원빈, 정인식, 이상원, 정다빈, 김지훈
 	        </div>
 	    </div>
 	</footer>

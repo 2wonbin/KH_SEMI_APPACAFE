@@ -52,7 +52,7 @@
 	 	<td><input type="text" value="<%=memberLoggedIn.getMemberNo() %>" name="sender"></td>
 	 </tr>
 
-	 	<td colspan="2">내용</td>
+	
 	 </tr>
 	 <tr>	 
 	 	<td colspan="2"><textarea name="content" class="form-control rounded-0" rows="10"></textarea></td>

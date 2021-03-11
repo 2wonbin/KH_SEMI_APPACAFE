@@ -13,6 +13,17 @@
 
 	Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
 
+	
+	String saveId = null;
+	Cookie[] cookies = request.getCookies();
+	if(cookies != null){
+		for(Cookie c : cookies){
+			if("saveId".equals(c.getName())){
+				saveId = c.getValue();
+				break;
+			}
+		}
+	}
 %>
 <!DOCTYPE html>
 <html class="h-100">
@@ -32,6 +43,15 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/bootstrap.js"></script>
 
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+        // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('b3a2af0dab238f5e4c5b32c1e9ac0017');
+
+        // SDK 초기화 여부를 판단합니다.
+        console.log(Kakao.isInitialized());
+</script>
+
 <script>
 	<% if(rqmsg != null) { %> alert("<%= rqmsg %>"); <% } %>
 	<% if(msg != null) { %> alert("<%= msg %>"); <% } %>
@@ -45,21 +65,33 @@
 	    </a>
 	    <% if(memberLoggedIn == null) { %>
 	    <div id="connect-link-btn">
-	    <table>
+	    <table style="text-align:center;">
 	    <tr>
 	    <td>
 	    <form style="display: inline;" class="form-inline" action="<%= request.getContextPath()%>/member/login" method="GET">
-		    <button class="btn btn-primary my-2 my-sm-0 login-btn btn-group btn-group-lg" value="login">로그인</button>
+		    <button class="btn btn-primary my-2 my-sm-0 login-btn btn-group btn-group-lg" value="login" style="width: 108px; text-align:center;">로그인</button>
 		</form>
 	    <input 
 		type="button" 
 		value="회원가입"
 		class="btn btn-success my-2 my-sm-0 btn-group btn-group-lg"
+		style="width: 108px; text-align:center"
 		onclick="location.href='<%= request.getContextPath() %>/member/memberEnroll';">
 		</div>
 	    </td>
 	    
 	    </tr>
+	    <td>
+	    <div>
+		    <a id="custom-login-btn" href="javascript:loginWithKakao()">
+			<img
+			  src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
+			  width="222"
+			/>
+			</a>
+	    </div>
+	    </td>
+	    <tr></tr>
 
 	    <tr>
 	    <td>
@@ -76,7 +108,49 @@
 								onclick="location.href='<%= request.getContextPath() %>/member/findPassword';">
 	    </td>
 	    </tr>
-
+<script type="text/javascript">
+		  function loginWithKakao() {
+		    Kakao.Auth.login({
+		      success: function(authObj) {
+		    	  Kakao.API.request({
+		    	        url: '/v2/user/me',
+		    	        success: function(res) {
+	   					  var kakaoJsonString = JSON.stringify(res)
+	    	              var jsonInfo = JSON.parse(kakaoJsonString); 
+	   					  location.href = '<%= request.getContextPath() %>/member/kakaoCheck' + '?kakaoID=' + jsonInfo.id;
+		   					
+		   					<% String memberId = (String)session.getAttribute("memberId"); %>
+		   					
+		   					<% if( memberId == null) {%>
+	   					  	Kakao.API.request({
+		   				      url: '/v1/user/unlink',
+		   				      success: function(res) {
+		   				        alert('카페아이디와 연동해주세요.')
+		   				      },
+		   				      fail: function(err) {
+		   				        alert('fail: ' + JSON.stringify(err))
+		   				      },
+		   				    })
+		   				    <% }else {%>
+		   				         location.href = '<%= request.getContextPath()%>/member/kakaoLogin?memberId=<%=memberId%>'
+		   						 alert('로그인 되었습니다.')
+		   				     <%  } %>
+		   				    
+		    	        },
+		    	        fail: function(error) {
+		    	          alert(
+		    	            'login success, but failed to request user information: ' +
+		    	              JSON.stringify(error)
+		    	          )
+		    	        },
+		    	      })
+		      },
+		      fail: function(err) {
+		        alert("계정연동에 실패하였습니다.")
+		      },
+		    })
+		  }
+		</script>
 	    </table>
 		<% } else { %>
 			<div class="user-info" style="text-align: center;">

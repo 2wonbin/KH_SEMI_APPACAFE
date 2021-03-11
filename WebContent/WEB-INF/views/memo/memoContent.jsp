@@ -46,8 +46,8 @@
 	 	<td><%=memo.getSendDate() %></td>
 	 </tr>
 	 <tr style="height: 200px;">
-	 	<td style="transform: translateY(40%);">내용</td>
-	 	<td style="transform: translateY(40%);"><%=memo.getContent() %></td>
+	 	<td >내용</td>
+	 	<td ><%=memo.getContent() %></td>
 	 </tr>
  </table>
  

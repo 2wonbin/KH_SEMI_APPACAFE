@@ -111,5 +111,50 @@ public class MemberService {
 		
 		return member;
 	}
+	
+	public int kakaoEnroll(int kakaoID, String memberID) {
+		
+		Connection conn = getConnection();
+		
+		int result = memberDao.kakaoEnroll(conn, kakaoID, memberID);
+		
+		//트랜잭션 처리
+		if(result > 0)
+			commit(conn);
+		else 
+			rollback(conn);
+		
+		//자원반납
+		close(conn);
+		
+		return result;
+	}
+
+	public int kakaoDelete(String memberID) {
+		Connection conn = getConnection();
+		
+		int result = memberDao.kakaoDelete(conn, memberID);
+		
+		//트랜잭션 처리
+		if(result > 0)
+			commit(conn);
+		else 
+			rollback(conn);
+		
+		//자원반납
+		close(conn);
+		
+		return result;
+	}
+
+	public Member findPeristalsis(String sKakaoID) {
+		Connection conn = getConnection();
+		
+		Member member = memberDao.findPeristalsis(conn, sKakaoID);
+		
+		close(conn);
+		
+		return member;
+	}
 
 }

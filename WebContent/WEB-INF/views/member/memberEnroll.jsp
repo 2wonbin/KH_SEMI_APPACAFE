@@ -27,40 +27,6 @@
 <script src="<%=request.getContextPath()%>/js/jquery-3.5.1.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
-	function phone_autoHypen(obj){
-		var str = obj.value;
-		str = str.replace(/[^0-9]/g, '');
-		var res = '';
-		var i =3
-		if(str.substr(0,2)=="02"){
-			i=2
-		}
-		if( str.length < i+1){
-		    $(obj).val(str);
-		}else if(str.length < i+4){
-		    res += str.substr(0, i);
-		    res += '-';
-		    res += str.substr(i);
-		    $(obj).val(res);
-		}else if(str.length < i+8){
-		    res += str.substr(0, i);
-		    res += '-';
-		    res += str.substr(i, 3);
-		    res += '-';
-		    res += str.substr(i+3);
-		    $(obj).val(res);
-		}else{
-		    res += str.substr(0, i);
-		    res += '-';
-		    res += str.substr(i, 4);
-		    res += '-';
-		    res+= str.substr(i+4,4);
-		
-		    $(obj).val(res);
-		}
-	}
-</script>
-<script>
 
 	$(function(){
 		
@@ -114,12 +80,26 @@
 		        	return false;
 		        }
 		        
+		    	//닉네임 중복검사
+		    	var $idValid = $("#nickNameValid");
+		    	if($idValid.val() != 1){
+		    		alert("닉네임 중복 검사해주세요.");
+		    		$idValid.focus();
+		    		return false;
+		    	}
+		        
 		        //ssn
 		        var $ssn = $("#ssn");
-		        
 		        if(/^[0-9]{13}$/.test($ssn.val()) == false){
 		        	alert("유효한 주민번호가 아닙니다.")
 		        	$ssn.select();
+		        	return false;
+		        }
+		        
+		        var $ssnSeven = ($ssn.val()).substring(6,7);
+		        
+		        if(($ssnSeven == "0") || ($ssnSeven == "2") || ($ssnSeven == "4") || ($ssnSeven == "5") || ($ssnSeven == "6") || ($ssnSeven == "7") || ($ssnSeven == "8") || ($ssnSeven == "9")){
+		        	alert("남성만 가입가능합니다.");
 		        	return false;
 		        }
 		        
@@ -139,6 +119,10 @@
 		 
 		 $("#memberId_").change(function(){
 				$("#idValid").val(0);
+			});
+		 
+		 $("#nickName_").change(function(){
+				$("#nickNameValid").val(0);
 			});
 		 
 	});
@@ -204,6 +188,8 @@
 	    }).open();
 		
 	}
+	
+	
 		
 </script>
 </head>
@@ -290,7 +276,7 @@
 					휴대전화<sup>*</sup>
 				</th>
 				<td>	
-					<input type="tel" placeholder="-없이 입력해주세요." name="phone" id="phone" maxlength="11" required onkeyup="phone_autoHypen(this)" onchange="phone_autoHypen(this)"><br>
+					<input type="tel" placeholder="-없이 입력해주세요." name="phone" id="phone" maxlength="11" required><br>
 				</td>
 			</tr>
 			<tr>
@@ -317,12 +303,14 @@
 				<input type="text" name="passwordQuestion" id="passwordQuestion" required><br>
 				</td>
 			</tr>
+			<tr>
+				<td>
+					<div id="btn-enroll-menu" style="text-align:center; position: relative; left : 100%;">
+						<input type="submit" class="btn btn-primary" value="가입" >
+						<input type="reset" class="btn btn-danger" value="취소">
+					</div>
+				</td>
+			</tr>
 		</table>
-
-		<div id="btn-enroll-menu" style="text-align:center;">
-			<input type="submit" class="btn btn-primary" value="가입" >
-			<input type="reset" class="btn btn-danger" value="취소">
-		</div>
-	
 	</form>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

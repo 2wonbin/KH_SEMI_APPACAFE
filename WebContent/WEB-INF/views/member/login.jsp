@@ -42,6 +42,16 @@ section{
 			<tr>
 				<td><input type="password" name="password" id="password" placeholder="비밀번호" class="form-control-lg"></td>
 				<tr>
+					<td>
+						<input 
+						type="checkbox" 
+						name="saveId" 
+						id="saveId" 
+						<%= saveId != null ? "checked" : "" %>/>
+						<label for="saveId">아이디저장</label>
+					</td>
+				</tr>
+				<tr>
 				<td><input type="submit" value="로그인" class="btn bg-primary text-white col-6 btn-lg"></td>
 			</tr>
 		<tr>

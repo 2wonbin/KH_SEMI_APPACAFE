@@ -28,13 +28,16 @@ public class MemberLoginServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Member member = new Member();
+		
 		String memberId = request.getParameter("memberId");
 		String password = MvcUtils.getEncryptedPassword(request.getParameter("password"));
 		String saveId = request.getParameter("saveId");
 		
-		Member member = memberService.selectMember(memberId);
+		member = memberService.selectMember(memberId);
 		
 		String delFlag = member.getDelFlag();
+		System.out.println(delFlag);
 		
 		if(member != null && password.equals(member.getPassword()) && delFlag.equals("N")) {
 			HttpSession session = request.getSession(true);

@@ -22,6 +22,9 @@
 	
 	 msg = (String)session.getAttribute("msg");
 	if(msg != null) session.removeAttribute("msg");
+	
+	String memberId = member.getMemberId();
+	
 %>
 <style>
 	th{
@@ -51,6 +54,7 @@
 
 </style>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.5.1.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 	<% if(msg != null) { %> alert("<%= msg %>"); <% } %>
 </script>
@@ -127,6 +131,22 @@
 		});
 		
 	});
+	
+	function addressFind(){
+		new daum.Postcode({
+
+	        oncomplete: function(data) {
+
+	            $("#zoneCode").val(data.zonecode); //data.zoncode 우편번호
+	            $("#roadAddress").val(data.roadAddress); //data.roadAddress 도로명주소
+	            
+	            $("#detail").focus();
+
+	        }
+
+	    }).open();
+		
+	}
 </script>
 <body>
 	<form name="checkNickNameDuplicateFrm">
@@ -191,6 +211,9 @@
 				<td>	
 					<input type="text" name="detail" id="detail" value="<%= memberLoggedIn.getDetail() != null ?  memberLoggedIn.getDetail() : "" %>"><br>
 				</td>
+				<td>
+					<input type="button" id="addressBtn" value="주소찾기" onclick="addressFind();" /><br>
+				</td>
 			</tr>
 			<tr>
 				<th>회원권한</th>
@@ -201,6 +224,21 @@
 		</table>
 		
 		</form>
+		<% if(checkKakao == null){ %>
+		<a id="custom-login-btn" href="javascript:loginWithKakao()">
+		  <img
+		    src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
+		    width="222"
+		  />
+		</a>
+		<% } else { %>
+		<a id="custom-delete-btn" href="javascript:unlinkApp()">
+		  <img
+		    src="<%=request.getContextPath()%>/img/kakaoDelete.png"
+		    width="222"
+		  />
+		</a>
+		<% } %>
 		<div id="btn-util-menu" style="text-align:center;">
         <input type="button" onclick="updateMember();" value="정보수정" class="btn btn-primary"/>
         <input type="button" onclick="updatePassword();" value="비밀번호수정" class="btn btn-primary"/>
@@ -209,5 +247,49 @@
         <% } %>
 		</div>
 		
+		
+		<script type="text/javascript">
+		  function loginWithKakao() {
+			
+		    Kakao.Auth.login({
+		      success: function(authObj) {
+		    	  Kakao.API.request({
+		    	        url: '/v2/user/me',
+		    	        success: function(res) {
+	   					  var kakaoJsonString = JSON.stringify(res)
+	    	              var jsonInfo = JSON.parse(kakaoJsonString); 
+	   					  location.href = '<%= request.getContextPath() %>/member/kaKaoEnroll' + '?kakaoID=' + jsonInfo.id + '&memberID=<%=memberId %>';
+	   					 
+		    	          alert("계정이 연동되었습니다.")
+		    	        },
+		    	        fail: function(error) {
+		    	          alert(
+		    	            'login success, but failed to request user information: ' +
+		    	              JSON.stringify(error)
+		    	          )
+		    	        },
+		    	      })
+		      },
+		      fail: function(err) {
+		        alert("계정연동에 실패하였습니다.")
+		      },
+		    })
+		  }
+		  
+		  function unlinkApp() {
+			    Kakao.API.request({
+			      url: '/v1/user/unlink',
+			      success: function(res) {
+		    	  var kakaoJsonString = JSON.stringify(res)
+   	              var jsonInfo = JSON.parse(kakaoJsonString); 
+				  location.href = '<%= request.getContextPath() %>/member/kakaoDelete' + '?kakaoID=' + jsonInfo.id + '&memberID=<%=memberId %>';
+			        alert('연동이 해제되었습니다.')
+			      },
+			      fail: function(err) {
+			        alert('연동해제 실패')
+			      },
+			    })
+			  }
+		</script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

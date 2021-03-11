@@ -297,5 +297,79 @@ public class MemberDao {
 		
 		return member;
 	}
+	public int kakaoEnroll(Connection conn, int kakaoID, String memberID) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("kakaoEnroll"); 
+		
+		try {
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
+			pstmt.setString(1, memberID);
+			pstmt.setInt(2, kakaoID);
+			
+			
+			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			//DML은 executeUpdate()
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 
+	public int kakaoDelete(Connection conn, String memberID) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("kakaoDelete"); 
+		
+		try {
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
+			pstmt.setString(1, memberID);
+			
+			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			//DML은 executeUpdate()
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public Member findPeristalsis(Connection conn, String sKakaoID) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findPeristalsis");
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sKakaoID);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				member = new Member();
+				member.setMemberId(rset.getString("member_ID_ref"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return member;
+	}
 }
