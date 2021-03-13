@@ -33,7 +33,10 @@
 	                        <a class="nav-link active" href="<%= request.getContextPath()%>/joojakList">
 	                           <span>중고거래</span>
 	                        </a>
-	                        
+	                         <a class="nav-link active" href="<%= request.getContextPath() %>/chat">
+	                           <span>익명채팅</span>
+	                        </a>
+	                                   
 	                        <% if(member != null && "A".equals(member.getMemberRole())) { %>
 	                        <a class="nav-link" href="<%= request.getContextPath()%>/admin/memberlist">
 	                           <span>관리자페이지</span>

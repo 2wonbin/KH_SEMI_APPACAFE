@@ -35,6 +35,7 @@ section{
 						name="memberId" 
 						id="memberId" 
 						placeholder="아이디"
+						value="<%= saveId != null ? saveId : ""%>"
 						class="form-control-lg">
 						
 				</td>

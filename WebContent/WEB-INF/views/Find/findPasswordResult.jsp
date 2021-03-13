@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	String memberId = String.valueOf(request.getAttribute("memberId"));
+	String memberID = String.valueOf(request.getAttribute("memberId"));
 %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ include file="/WEB-INF/views/common/navbar.jsp" %>
@@ -46,7 +46,7 @@ function passwordValidate(){
 	method="POST"
 	style="text-align:center;">
 		<table class="table table-borderless">
-			<input type="hidden" name="memberId" value="<%= memberId %>" />
+			<input type="hidden" name="memberId" value="<%= memberID %>" />
 			<tr>
 				<th>
 					<span class="pwcheck">변경할 비밀번호를 입력하세요.</span>

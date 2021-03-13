@@ -32,25 +32,32 @@ public class KakaoCheckServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
+		
 			
 			 String sKakaoID = request.getParameter("kakaoID");
 			  System.out.println(sKakaoID);
 			
 			  //여기서 kakoId가져가서 db에서 맴버아이디 가져와야됨
+			 
+			  Member member = null;
+			  Member membercheck = memberService.findPeristalsis(sKakaoID);
 			  
-			  Member member = memberService.findPeristalsis(sKakaoID);
-			  String memberId = member.getMemberId();
-			
-			 HttpSession session = request.getSession(true);
-			 session.setAttribute("memberId", memberId);
-				
-			response.sendRedirect(request.getContextPath());
-			
-		} catch(NullPointerException e) {
-			response.sendRedirect(request.getContextPath());
-		}
-		
+			   
+			  if (membercheck != null) {
+				  String memberId = membercheck.getMemberId();
+				  member  = memberService.selectMember(memberId); 
+				  HttpSession session = request.getSession(true);
+			     session.setAttribute("memberLoggedIn", member);
+				   response.sendRedirect(request.getContextPath());
+			  } else {
+				  	Boolean check = true;
+				  	
+				  	HttpSession session = request.getSession(true);
+					session.setAttribute("msg", "먼저 연동해주세요");
+					session.setAttribute("kakaoLogout", check);	
+					response.sendRedirect(request.getContextPath());
+			  }				
+	
 	}
 
 	/**

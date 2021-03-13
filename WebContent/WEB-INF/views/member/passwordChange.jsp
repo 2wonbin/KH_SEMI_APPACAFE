@@ -49,6 +49,7 @@ function passwordValidate(){
 <body>
 <div id="passwordFrm">
 	<h2 style="text-align: center; margin-top: 24px;" >비밀번호 변경</h2>
+	<div>
 		<form 
 			name="updatePwdFrm" 
 			action="<%=request.getContextPath()%>/member/passwordChange" 
@@ -78,5 +79,6 @@ function passwordValidate(){
 			</table>
 			<input type="hidden" name="memberId" value="<%= request.getParameter("memberId") %>"/>
 		</form>
+	</div>
 </div>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

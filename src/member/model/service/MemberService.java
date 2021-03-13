@@ -157,4 +157,14 @@ public class MemberService {
 		return member;
 	}
 
+	public Member checkKakao(String memberId) {
+		Connection conn = getConnection();
+		
+		Member member =  memberDao.checkKakao(conn, memberId);
+		
+		close(conn);
+		
+		return member;
+	}
+
 }

@@ -372,4 +372,33 @@ public class MemberDao {
 		
 		return member;
 	}
+
+	public Member checkKakao(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("checkKakao");
+		Member member = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			
+			//2.Statement실행 및 결과처리:ResultSet -> Member
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				member = new Member();
+				
+				member.setMemberId(rset.getString("member_ID_ref"));
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return member;
+	}
 }

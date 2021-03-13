@@ -7,11 +7,7 @@
 --%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ include file="/WEB-INF/views/common/navbar.jsp" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 <style>
 	sup{
 	color : red;
@@ -29,9 +25,7 @@
 	font-size : 2.5em;
 	}
 </style>
-</head>
-<body>
-<h1 style="text-align:center; margin:24px 0;"">아이디 찾기</h1>
+<h1 style="text-align:center; margin:24px 0;">아이디 찾기</h1>
 <br>
 
 	<form 

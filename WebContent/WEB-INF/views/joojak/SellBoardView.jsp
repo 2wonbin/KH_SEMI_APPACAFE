@@ -49,7 +49,7 @@
 	#commentfrm{
 	    position: relative;
     	left: 25%;
-}
+    	z-index:-1;
 	}
 	
 	.comment-container {
@@ -230,7 +230,7 @@ table#tbl-comment1 tr:hover button.btn-delete{display:inline;}
 					html += '<input type="hidden" name="boardCommentLevel" value="2" />';
 					html += '<input type="hidden" name="boardCommentRef" value="' + $this.val() + '" />';
 					html += '<textarea name="boardCommentContent" cols="60" rows="2"></textarea>';
-					html += '<button type="submit" class="btn-insert2">등록</button>';
+					html += '<button type="submit" class="btn-insert2 btn btn-success">등록</button>';
 					html += '</form>';
 			        html += '</td>';
 			        html += '</tr>';

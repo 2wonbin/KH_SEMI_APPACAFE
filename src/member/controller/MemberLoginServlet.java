@@ -30,47 +30,58 @@ public class MemberLoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = new Member();
 		
-		String memberId = request.getParameter("memberId");
-		String password = MvcUtils.getEncryptedPassword(request.getParameter("password"));
-		String saveId = request.getParameter("saveId");
-		
-		member = memberService.selectMember(memberId);
-		
-		String delFlag = member.getDelFlag();
-		System.out.println(delFlag);
-		
-		if(member != null && password.equals(member.getPassword()) && delFlag.equals("N")) {
-			HttpSession session = request.getSession(true);
-			session.setAttribute("memberLoggedIn", member);
+		try {
 			
-			//saveId쿠키설정
-			Cookie c = new Cookie("saveId", memberId);
+			String memberId = request.getParameter("memberId");
+			String password = MvcUtils.getEncryptedPassword(request.getParameter("password"));
+			String saveId = request.getParameter("saveId");
 			
-			c.setPath(request.getContextPath());
-
-			//saveId체크한 경우
-			if(saveId != null) {
-				//유효기간설정(초단위)
-				//client(브라우져)에서 쿠키를 보관한 시간설정
-				c.setMaxAge(7 * 24 * 60 * 60);
-			}
-			//saveId체크안한 경우 : 브라우져의 쿠키를 삭제
-			else {
-				c.setMaxAge(0);//즉시 삭제
-			}
-			response.addCookie(c);
+			member = memberService.selectMember(memberId);
 			
+			String delFlag = member.getDelFlag();
+			System.out.println(delFlag);
+			
+			if(member != null && password.equals(member.getPassword()) && delFlag.equals("N")) {
+				HttpSession session = request.getSession(true);
+				session.setAttribute("memberLoggedIn", member);
+				
+				//saveId쿠키설정
+				Cookie c = new Cookie("saveId", memberId);
+				
+				c.setPath(request.getContextPath());
+				
+				//saveId체크한 경우
+				if(saveId != null) {
+					//유효기간설정(초단위)
+					//client(브라우져)에서 쿠키를 보관한 시간설정
+					c.setMaxAge(7 * 24 * 60 * 60);
+				}
+				//saveId체크안한 경우 : 브라우져의 쿠키를 삭제
+				else {
+					c.setMaxAge(0);//즉시 삭제
+				}
+				response.addCookie(c);
+				
 //			String location = request.getHeader("referer"); //http://localhost:9090/father/
-			String location = request.getContextPath(); //http://localhost:9090/father/
-			response.sendRedirect(location); 
+				String location = request.getContextPath(); //http://localhost:9090/father/
+				response.sendRedirect(location); 
+				
+				
+			} else {
+				
+				HttpSession session = request.getSession(true);
+				session.setAttribute("msg", "유효하지 않은 접근입니다.");
+				
+				response.sendRedirect(request.getContextPath());
+			}
 			
-			
-		} else {
+		} catch(NullPointerException e) {
 			
 			HttpSession session = request.getSession(true);
 			session.setAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
 			
 			response.sendRedirect(request.getContextPath());
+			
 		}
 		
 	}

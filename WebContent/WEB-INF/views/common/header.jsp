@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%
 	String msg = (String)session.getAttribute("msg");
+    Boolean kakaoLogout = (Boolean)request.getAttribute("kakaoLogout");
 	if(msg != null) session.removeAttribute("msg");
 	
 	
@@ -12,7 +13,7 @@
 
 
 	Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
-
+	Member checkKakao = (Member)session.getAttribute("checkKakao");
 	
 	String saveId = null;
 	Cookie[] cookies = request.getCookies();
@@ -49,13 +50,33 @@
         Kakao.init('b3a2af0dab238f5e4c5b32c1e9ac0017');
 
         // SDK 초기화 여부를 판단합니다.
-        console.log(Kakao.isInitialized());
+        console.log(Kakao.isInitialized())   
+        
+       
 </script>
 
 <script>
 	<% if(rqmsg != null) { %> alert("<%= rqmsg %>"); <% } %>
 	<% if(msg != null) { %> alert("<%= msg %>"); <% } %>
 	<% if(loc != null) { %> location.href = "<%= loc %>"; <% } %>
+	<% if(loc != null) { %> location.href = "<%= loc %>"; <% } %>
+	
+	<% if(kakaoLogout != null) { %>
+	unlinkApp();
+	
+    function unlinkApp() {
+   
+    	Kakao.API.request({
+          url: '/v1/user/unlink',
+          success: function(res) {
+            alert('연동을 먼저해주세요')
+          },
+          fail: function(err) {
+            alert('fail: ' + JSON.stringify(err))
+          },
+        })
+   	 }
+    <% } %>
 </script>
 
 <body class="d-flex flex-column h-100">
@@ -115,27 +136,9 @@
 		    	  Kakao.API.request({
 		    	        url: '/v2/user/me',
 		    	        success: function(res) {
-	   					  var kakaoJsonString = JSON.stringify(res)
-	    	              var jsonInfo = JSON.parse(kakaoJsonString); 
-	   					  location.href = '<%= request.getContextPath() %>/member/kakaoCheck' + '?kakaoID=' + jsonInfo.id;
-		   					
-		   					<% String memberId = (String)session.getAttribute("memberId"); %>
-		   					
-		   					<% if( memberId == null) {%>
-	   					  	Kakao.API.request({
-		   				      url: '/v1/user/unlink',
-		   				      success: function(res) {
-		   				        alert('카페아이디와 연동해주세요.')
-		   				      },
-		   				      fail: function(err) {
-		   				        alert('fail: ' + JSON.stringify(err))
-		   				      },
-		   				    })
-		   				    <% }else {%>
-		   				         location.href = '<%= request.getContextPath()%>/member/kakaoLogin?memberId=<%=memberId%>'
-		   						 alert('로그인 되었습니다.')
-		   				     <%  } %>
-		   				    
+	   					  	var kakaoJsonString = JSON.stringify(res)
+	    	             	var jsonInfo = JSON.parse(kakaoJsonString); 
+	   					 	location.href = '<%= request.getContextPath() %>/member/kakaoCheck' + '?kakaoID=' + jsonInfo.id;    
 		    	        },
 		    	        fail: function(error) {
 		    	          alert(

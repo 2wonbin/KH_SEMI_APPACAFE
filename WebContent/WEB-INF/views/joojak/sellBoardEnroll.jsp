@@ -13,6 +13,7 @@
     <script>
         $(function(){
             $("[name=boardEnrollFrm]").submit(boardValidate);
+	            
         });
         
         /**
@@ -63,7 +64,7 @@
             </tr>
             <tr>
                 <th>가격</th>
-                <td><input type="text" name="price" required></td>
+                <td><input type="number" name="price" required></td>
             </tr>
             <tr>
                 <th>제품 설명</th>

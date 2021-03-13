@@ -29,8 +29,13 @@ public class MemberViewServlet extends HttpServlet {
 		String memberId = request.getParameter("memberId");
 		
 		Member member = memberService.selectMember(memberId);
+		
+		Member kakaoMember = memberService.checkKakao(memberId);
+		
+		
 		HttpSession session = request.getSession(true);
 		session.setAttribute("memberLoggedIn", member);
+		session.setAttribute("checkKakao", kakaoMember);
 		request.getRequestDispatcher("/WEB-INF/views/member/memberView.jsp")
 			   .forward(request, response);
 	}
