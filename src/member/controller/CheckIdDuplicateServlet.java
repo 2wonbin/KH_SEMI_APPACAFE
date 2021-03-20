@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
@@ -30,9 +32,12 @@ public class CheckIdDuplicateServlet extends HttpServlet {
 		Member member = memberService.selectMember(memberId);
 		boolean available = (member == null);
 		
-		request.setAttribute("available", available);
-		request.getRequestDispatcher("/WEB-INF/views/member/checkidDuplicate.jsp")
-			   .forward(request, response);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("available", available);
+
+		response.setContentType("application/x-json; charset=UTF-8");
+		response.getWriter().print(obj);
 	}
 
 }

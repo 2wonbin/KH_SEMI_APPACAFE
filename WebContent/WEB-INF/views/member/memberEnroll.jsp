@@ -23,6 +23,13 @@
 	.duplicateFrm{
 		display : none;
 	}
+	
+	
+#memberId_duplication {
+	display: inline-block;
+	font-weight: bold;
+	color:red;
+}
 </style>
 <script src="<%=request.getContextPath()%>/js/jquery-3.5.1.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -125,6 +132,31 @@
 				$("#nickNameValid").val(0);
 			});
 		 
+		 $("#memberId_").blur(function(){
+		        var $id = $("#memberId_").val();
+
+		        $.ajax({
+			    	url:"<%=request.getContextPath()%>/member/checkIdDuplicate",
+					method : "POST",
+					dataType : "json",
+					data : {
+						"memberId": $id,
+					},
+					success: function(receivedata){
+						if(receivedata.available){
+							$("#idValid").val(1);
+							$("#memberId_duplication").hide();
+						}
+						else {
+							$("#idValid").val(0);
+							$("#memberId_duplication").show();
+						}
+					},
+					error : function(xhr, status, err){
+						console.log(xhr, status, err);
+					}
+			    });	        
+	    });
 	});
 	
 	function checkIdDuplicate(){
@@ -190,6 +222,8 @@
 	}
 	
 	
+
+		
 		
 </script>
 </head>
@@ -214,9 +248,10 @@
 					아이디<sup>*</sup>
 				</th>
 				<td>
-					<input type="text" placeholder="4글자이상" name="memberId" id="memberId_" required>
-					<input type="button" value="중복검사" onclick="checkIdDuplicate();"/>
-					<input type="hidden" id="idValid" value="0" />
+					<input type="text" placeholder="4글자이상" name="memberId" id="memberId_" required >
+					<!--  <input type="button" value="중복검사" onclick="checkIdDuplicate();"/> -->
+					<input type="hidden" id="idValid" value="0" /> 
+					<div id="memberId_duplication" style="display: none;"> 중복입니다. </div>
 					<%-- 중복검사 통과인경우 1 / 통과하지 못한 경우 0 --%>
 				</td>
 			</tr>

@@ -12,12 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import board.model.service.BoardService;
 import board.model.vo.BoardVo;
 import common.util.CommonUtil;
+import memo.model.service.MemoService;
+import memo.model.vo.MemoVo;
 
 
 @WebServlet("/boardList")
 public class BoardListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BoardService boardService = new BoardService();
+
        
     public BoardListServlet() {
         super();
@@ -44,12 +47,18 @@ public class BoardListServlet extends HttpServlet {
 			request.setAttribute("boardType", boardType);
 			request.setAttribute("list",list);
 			request.setAttribute("pageBar",pageBar);
+			
+			
+			
 			request.getRequestDispatcher("/WEB-INF/views/board/boardList.jsp")
-			   .forward(request, response);
+			.forward(request, response);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

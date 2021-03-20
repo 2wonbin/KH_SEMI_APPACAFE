@@ -1,4 +1,4 @@
-`package memo.model.service;
+package memo.model.service;
 
 import static common.JDBCTemplate.close;
 import static common.JDBCTemplate.commit;
@@ -88,6 +88,14 @@ public class MemoService {
 			close(conn);
 			
 			return result;
+	}
+	
+	
+	public int countUnReadMemo(int receiver) {
+		Connection conn = getConnection();
+		int isread = memoDao.countUnReadMemo(conn, receiver);
+		close(conn);
+		return isread;
 	}
 	
 	

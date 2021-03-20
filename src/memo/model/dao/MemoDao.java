@@ -280,4 +280,29 @@ public class MemoDao {
 		
 		return result;
 	}
+
+
+	public int countUnReadMemo(Connection conn, int receiver) {
+		PreparedStatement pstmt = null;
+		int totalContents = 0;
+		ResultSet rset = null;
+		String query = prop.getProperty("countUnReadMemo");
+		
+		try{
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, receiver);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()){
+				totalContents = rset.getInt("cnt");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		
+		return totalContents;
+	}
 }

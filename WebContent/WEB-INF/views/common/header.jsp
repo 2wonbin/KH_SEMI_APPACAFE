@@ -77,6 +77,40 @@
         })
    	 }
     <% } %>
+    
+    <% if(memberLoggedIn != null) { %>
+    function checkMemo() {
+	    $.ajax({
+	    	url:"<%=request.getContextPath()%>/memo/CountUnreadMemo",
+			method : "POST",
+			dataType : "json",
+			data : {
+				'receiver': <%= memberLoggedIn.getMemberNo() %>,
+			},
+			success: function(data){
+				if(data.unreadMemo > 0) {
+					document.getElementById("memoBtn").classList.add("blingbling");
+				}
+				else  {
+					document.getElementById("memoBtn").classList.remove("blingbling");
+				}
+			},
+			error : function(xhr, status, err){
+				console.log(xhr, status, err);
+			}
+	    });
+		console.log("쪽지 왔니?");
+    }
+    checkMemo();
+    
+    setInterval(() => {
+    	checkMemo();    	
+    }, 5000);
+    <% } %>
+    
+    
+    
+    
 </script>
 
 <body class="d-flex flex-column h-100">
@@ -172,10 +206,11 @@
 								onclick="location.href='<%= request.getContextPath() %>/member/logout'; "/>
 							
 							 <input 
+							 	id="memoBtn"
 								type="button" 
 								class="btn btn-info"
 								value="✉" 
-								onclick="popupMemoList()"/>
+								onclick="popupMemoList(this)"/>
 							 
 							 
 							
@@ -185,7 +220,8 @@
 			
 			
 			<script>
-				function popupMemoList() {
+				function popupMemoList(target) {
+					target.classList.remove("blingbling");
 					window.open('<%= request.getContextPath() %>/memo/memoList?receiver=<%=memberLoggedIn.getMemberNo() %> ', 'memoPopup', 'width=800px, height=480px'); 
 				}
 				function popupMemoWriter(memberId) {
