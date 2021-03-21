@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
@@ -32,9 +34,11 @@ public class CheckNickNameDuplicateServlet extends HttpServlet {
 		
 //		System.out.println(nickName);
 		
-		request.setAttribute("available", available);
-		request.getRequestDispatcher("/WEB-INF/views/member/checkNickNameDuplicate.jsp")
-			   .forward(request, response);
+		JSONObject obj = new JSONObject();
+		obj.put("available", available);
+
+		response.setContentType("application/x-json; charset=UTF-8");
+		response.getWriter().print(obj);
 	}
 
 }

@@ -220,7 +220,6 @@ public class MemberDao {
 				member.setZoneCode(rset.getString("zone_code"));
 				member.setRoadAddress(rset.getString("road_address"));
 				member.setDetail(rset.getString("detail"));
-				member.setGrade(rset.getString("member_grade"));
 				member.setMemberRole(rset.getString("member_role"));
 				member.setEnrollDate(rset.getDate("enroll_date"));
 				member.setDelFlag(rset.getString("del_flag"));

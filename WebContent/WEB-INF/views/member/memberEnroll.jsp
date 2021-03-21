@@ -26,7 +26,13 @@
 	
 	
 #memberId_duplication {
-	display: inline-block;
+	display: block;
+	font-weight: bold;
+	color:red;
+}
+
+#nickName_duplication {
+	display: block;
 	font-weight: bold;
 	color:red;
 }
@@ -59,7 +65,7 @@
 		    	//아이디 중복검사
 		    	var $idValid = $("#idValid");
 		    	if($idValid.val() != 1){
-		    		alert("아이디 중복 검사해주세요.");
+		    		alert("중복되지 않은 ID를 입력해주세요.");
 		    		$idValid.focus();
 		    		return false;
 		    	}
@@ -90,7 +96,7 @@
 		    	//닉네임 중복검사
 		    	var $idValid = $("#nickNameValid");
 		    	if($idValid.val() != 1){
-		    		alert("닉네임 중복 검사해주세요.");
+		    		alert("중복되지 않는 닉네임을 입력해주세요.");
 		    		$idValid.focus();
 		    		return false;
 		    	}
@@ -150,6 +156,32 @@
 						else {
 							$("#idValid").val(0);
 							$("#memberId_duplication").show();
+						}
+					},
+					error : function(xhr, status, err){
+						console.log(xhr, status, err);
+					}
+			    });	        
+	    });
+		 
+		 $("#nickName_").blur(function(){
+		        var $nickName = $("#nickName_").val();
+
+		        $.ajax({
+			    	url:"<%=request.getContextPath()%>/member/checkNickNameDuplicate",
+					method : "POST",
+					dataType : "json",
+					data : {
+						"nickName": $nickName,
+					},
+					success: function(receivedata){
+						if(receivedata.available){
+							$("#nickNameValid").val(1);
+							$("#nickName_duplication").hide();
+						}
+						else {
+							$("#nickNameValid").val(0);
+							$("#nickName_duplication").show();
 						}
 					},
 					error : function(xhr, status, err){
@@ -251,7 +283,7 @@
 					<input type="text" placeholder="4글자이상" name="memberId" id="memberId_" required >
 					<!--  <input type="button" value="중복검사" onclick="checkIdDuplicate();"/> -->
 					<input type="hidden" id="idValid" value="0" /> 
-					<div id="memberId_duplication" style="display: none;"> 중복입니다. </div>
+					<div id="memberId_duplication" style="display: none;"> 이미 사용중인 ID입니다. </div>
 					<%-- 중복검사 통과인경우 1 / 통과하지 못한 경우 0 --%>
 				</td>
 			</tr>
@@ -285,8 +317,9 @@
 				</th>
 				<td>
 					<input type="text" placeholder="2글자이상(특수기호사용불가)" name="nickName" id="nickName_" required>
-					<input type="button" value="중복검사" onclick="checkNickNameDuplicate();"/>
+					<!-- <input type="button" value="중복검사" onclick="checkNickNameDuplicate();"/> -->
 					<input type="hidden" id="nickNameValid" value="0" />
+					<div id="nickName_duplication" style="display: none;"> 이미 사용중인 닉네임입니다. </div>
 					<%-- 중복검사 통과인경우 1 / 통과하지 못한 경우 0 --%>
 				</td>
 			</tr>   
