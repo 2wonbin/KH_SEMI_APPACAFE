@@ -99,7 +99,7 @@
 				console.log(xhr, status, err);
 			}
 	    });
-		console.log("쪽지 왔니?");
+		
     }
     checkMemo();
     

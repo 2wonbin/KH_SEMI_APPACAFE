@@ -14,7 +14,6 @@
 	    <div class="container">
 	        <div class="text-center">
 	            AppaCafe. 2021.<br>
-	            이원빈, 정인식, 이상원, 정다빈, 김지훈
 	        </div>
 	    </div>
 	</footer>
